@@ -1,5 +1,6 @@
 from django.db import models
-from conf import settings
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 
 # 회원간 소통 할 수 있는 커뮤니티 기능(게시판)을 구현합니다.
 # • 게시글 조회, 생성, 삭제, 수정 및 댓글 생성, 삭제 기능은 필수로 구현합니다.
@@ -18,6 +19,7 @@ class FinanceReview(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+
 class ProductReview(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
@@ -26,10 +28,20 @@ class ProductReview(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+
 class QuestionAnswer(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="like_board")
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+class Comment(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    finance_review = models.ForeignKey(FinanceReview, on_delete=models.CASCADE, null=True, blank=True)
+    product_review = models.ForeignKey(ProductReview, on_delete=models.CASCADE, null=True, blank=True)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

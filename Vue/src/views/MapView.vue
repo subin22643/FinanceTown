@@ -1,7 +1,19 @@
 <template>
     <div>
-      <form @submit="searchPlaces">
-        <input type="text" v-model="searchQuery" placeholder="장소 검색">
+      <form @submit.prevent="searchPlaces">
+        <!-- 드롭다운 메뉴를 추가합니다 -->
+        <select v-model="selectedCity" class="me-1">
+            <option disabled value="">도시 선택</option>
+            <option v-for="city in cities" :value="city">{{ city }}</option>
+        </select>
+        <select v-model="selectedDistrict" class="me-1">
+            <option disabled value="">구 선택</option>
+            <option v-for="district in filteredDistricts" :value="district">{{ district }}</option>
+         </select>
+         <select v-model="selectedBank" class="me-1">
+            <option disabled value="">은행 선택</option>
+            <option v-for="bank in banks" :value="bank">{{ bank }}</option>
+        </select>
         <button type="submit">검색</button>
       </form>
         <h3>지도 페이지</h3>
@@ -11,12 +23,11 @@
 
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted,computed } from 'vue'
 
 const map = ref(null)
 let mapInstance; // 지도 인스턴스 전역 변수 선언
 let infowindow = new kakao.maps.InfoWindow({zIndex:1}); // 인포윈도우 생성
-
 
 onMounted(() => {
     const kakao = window.kakao
@@ -29,13 +40,36 @@ onMounted(() => {
 })
 
 
-const searchQuery=ref('')
-const searchPlaces = () => {
-  const ps = new kakao.maps.services.Places()
-  ps.keywordSearch(searchQuery.value, placesSearchCB)
+//@@@@@@@@@@@@@ 시,구, 은행 검색 구현@@@@@@@@@@
+//추후 최신 행정구역 api나 DB로 다운받아서 리스트 만들기 + 은행목록도
+const banks = ['KB국민은행', '신한은행', '우리은행', '하나은행', 'NH농협은행'];
+const cities = ['서울', '부산', '대구', '인천']
+const cityDistricts = {
+  서울: ['강남구', '서초구', '종로구', '중구'],
+  부산: ['해운대구', '남구', '동래구', '부산진구'],
+  대구: ['달서구', '수성구', '북구', '중구'],
+  인천: ['중구', '동구', '미추홀구', '연수구']
 }
 
-// 키워드 검색 완료 시 호출되는 콜백함수 입니다
+
+// 선택된 값들
+const selectedCity = ref('');
+const selectedDistrict = ref('');
+const selectedBank = ref('');
+
+const filteredDistricts = computed(() => {
+  return cityDistricts[selectedCity.value] || [];
+});
+
+
+const searchPlaces = () => {
+  const searchKeyword = `${selectedCity.value} ${selectedDistrict.value} ${selectedBank.value}`;
+  const ps = new kakao.maps.services.Places()
+  ps.keywordSearch(searchKeyword, placesSearchCB)
+}
+
+
+//@@@@@@@@@@@@@@검색된 장소 위치를 기준으로 지도 범위를 재설정 및 마커 형성@@@@@@@@@@@@@@@
 function placesSearchCB (data, status, pagination) {
     if (status === kakao.maps.services.Status.OK) {
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해

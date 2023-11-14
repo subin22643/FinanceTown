@@ -4,7 +4,7 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
-    <div>
+    <div class ="ms-4 mt-3">
       <h1>메인 페이지</h1>
       <RouterLink :to="{ name: 'search' }">조회</RouterLink>
       <span> | </span>

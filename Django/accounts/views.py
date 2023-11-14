@@ -4,12 +4,13 @@ from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
 
 def index(request):
     return render(request, 'accounts/index.html')
 
-
+@csrf_exempt
 def login(request):
     if request.user.is_authenticated:
         return redirect('accounts:index')
@@ -33,6 +34,7 @@ def logout(request):
     return redirect('accounts:index')
 
 
+@csrf_exempt
 def signup(request):
     if request.user.is_authenticated:
         return redirect('accounts:index')
@@ -50,11 +52,13 @@ def signup(request):
     }
     return render(request, 'accounts/signup.html', context)
 
+
 @login_required
 def delete(request):
     request.user.delete()
     auth_logout(request)
     return redirect('accounts:index')
+
 
 @login_required
 def update(request):

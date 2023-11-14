@@ -1,26 +1,24 @@
 from rest_framework import serializers
-from .models import FinanceReview,ProductReview,QuestionAnswer,Comment
+from .models import FinanceReviews,ProductReviews,Comments
 
 class FinanceReviewSerializer(serializers.ModelSerializer):
     class Meta:
-        model = FinanceReview
+        model = FinanceReviews
         fields = '__all__'
+        read_only_fields = ['author','like_users']
 
 class ProductReviewSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ProductReview
+        model = ProductReviews
         fields = '__all__'
-
-class QuestionAnswerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = QuestionAnswer
-        fields = '__all__'
+        read_only_fields = ['author','like_users']
 
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Comment
+        model = Comments
         fields = '__all__'
+        read_only_fields = ['author']
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)

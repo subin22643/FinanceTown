@@ -1,6 +1,6 @@
 from django.db import models
-from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.models import ContentType
+from django.conf import settings
+
 
 # 회원간 소통 할 수 있는 커뮤니티 기능(게시판)을 구현합니다.
 # • 게시글 조회, 생성, 삭제, 수정 및 댓글 생성, 삭제 기능은 필수로 구현합니다.
@@ -11,37 +11,37 @@ from django.contrib.contenttypes.models import ContentType
 
 
 # Create your models here.
-class FinanceReview(models.Model):
+class FinanceReviews(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="like_board")
+    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="like_finance")
     title = models.CharField(max_length=50)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
-class ProductReview(models.Model):
+class ProductReviews(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="like_product")
     title = models.CharField(max_length=50)
-    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="like_board")
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
-class QuestionAnswer(models.Model):
+class QuestionAnswers(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="like_QnA")
     title = models.CharField(max_length=50)
-    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="like_board")
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
-class Comment(models.Model):
+class Comments(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    finance_review = models.ForeignKey(FinanceReview, on_delete=models.CASCADE, null=True, blank=True)
-    product_review = models.ForeignKey(ProductReview, on_delete=models.CASCADE, null=True, blank=True)
+    finance = models.ForeignKey(FinanceReviews, on_delete=models.CASCADE, null=True, blank=True, related_name="finance_comments")
+    product = models.ForeignKey(ProductReviews, on_delete=models.CASCADE, null=True, blank=True, related_name="product_comments")
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

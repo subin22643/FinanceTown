@@ -28,4 +28,3 @@ class CommentSerializer(serializers.ModelSerializer):
         if not instance.product_review:
             representation.pop('product_review', None)
         return representation
-

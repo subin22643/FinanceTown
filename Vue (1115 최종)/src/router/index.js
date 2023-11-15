@@ -3,6 +3,8 @@ import MainPage from '../views/MainView.vue'
 import Search from '../views/SearchView.vue'
 import MapView from '../views/MapView.vue'
 import ExchangeRate from '../views/ExchangeRateView.vue'
+import Board from '../views/BoardView.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,7 +29,11 @@ const router = createRouter({
       name: 'exchange',
       component: ExchangeRate
     },
-    
+    {
+      path: '/boards',
+      redirect: 'boards',
+      component: Board,
+    }
   ]
 })
 

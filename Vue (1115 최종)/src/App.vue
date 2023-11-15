@@ -12,6 +12,7 @@ import { RouterLink, RouterView } from 'vue-router'
       <span> | </span>
       <RouterLink :to="{ name: 'map' }">지도</RouterLink>
       <RouterView/>
+      <RouterLink :to="{ name: ''}"></RouterLink>
     </div>
 </template>
 

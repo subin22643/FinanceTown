@@ -8,7 +8,7 @@ export const useExchangeStore = defineStore('exchange', () => {
   const getExchanges = function() {
     axios({
       method: 'GET',
-      url: `${URL}/exchange`
+      url: `${URL}/exchanges`
     })
       .then(res => {
         exchanges.value = res.data.response

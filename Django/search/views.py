@@ -12,20 +12,6 @@ from .serializers import DepositProductsSerializer, DepositOptionsSerializer, Sa
 # @@@@@@@@@@@@ params에 pageNO 수정 해야함
 
 
-URL = 'https://www.koreaexim.go.kr/site/program/financial/exchangeJSON'
-@api_view(['GET'])
-def exchange(request):
-    params = {
-        'authkey' : 'Uy013h5RQvCr44y7rRuPpQxSqr2m7TlC',
-        # default 값은 오늘날짜인데 원하는 날짜도 입력가능
-        'searchdate' : '20231113',
-        'data' : 'AP01'
-    }
-    response = requests.get(URL, params=params).json()
-    return JsonResponse({ 'response' : response })
-
-
-
 BASE_URL = 'https://finlife.fss.or.kr/finlifeapi/'
 DEPOSIT_URL = BASE_URL + 'depositProductsSearch.json'
 SAVING_URL = BASE_URL + 'savingProductsSearch.json'

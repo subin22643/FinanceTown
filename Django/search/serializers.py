@@ -13,6 +13,12 @@ from .models import DepositProducts, DepositOptions, SavingProducts, SavingOptio
 #         read_only_fields = ('product',)
 
 class DepositProductsSerializer(serializers.ModelSerializer):
+    class DepositOptionsSerializer(serializers.ModelSerializer):
+        class Meta():
+            model = DepositOptions
+            fields = '__all__'
+    
+    deposit_options = DepositOptionsSerializer(read_only=True)
     class Meta():
         model = DepositProducts
         fields = '__all__'

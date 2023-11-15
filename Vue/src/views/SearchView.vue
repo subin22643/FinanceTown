@@ -1,21 +1,21 @@
 <script setup>
-
+import { onMounted } from 'vue'
+import { useFinanceStore } from '../stores/counter';
 import axios from 'axios'
+import SearchList from '../components/SearchList.vue'
 
+const store = useFinanceStore()
 
-// const URL = 'http://finlife.fss.or.kr/finlifeapi/depositProductsSearch.json?auth={발급받은 인증키}&topFinGrpNo=020000&pageNo=1'
-
-// const params = {
-//     'auth': 'c8753044e7de2142207743a6737640ce',
-//     'topFinGrpNo': '020000',
-//     'pageNo': '1',
-// }
+onMounted(() => {
+    store.getDeposit()
+})
 
 </script>
 
 <template>
     <div>
-        <h2>조회 페이지</h2>
+        <h2>조회 페이지(예적금 목록 출력)</h2>
+        <SearchList/>
     </div>
 </template>
 

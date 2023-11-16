@@ -50,7 +50,7 @@ def save_deposit_products(request):
     for option in options:
         try:
             product = DepositProducts.objects.get(fin_prdt_cd=option['fin_prdt_cd'])
-            serializer =DepositOptionsSerializer(data=option)
+            serializer = DepositOptionsSerializer(data=option)
             if serializer.is_valid(raise_exception=True):
                 serializer.save(product=product)
         except DepositProducts.DoesNotExist: #get에서 일치하는 정보가 없을 경우

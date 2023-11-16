@@ -10,6 +10,10 @@
           <div class="form-group">
             <input type="text" v-model.trim="username" class="form-control" placeholder="아이디">
           </div>
+           <!-- Nickname Field -->
+           <div class="form-group">
+            <input type="text" v-model.trim="nickname" class="form-control" placeholder="닉네임">
+          </div>
           <!-- Password Fields -->
           <div class="form-group">
             <input type="password" v-model.trim="password1" class="form-control" placeholder="비밀번호">
@@ -17,29 +21,37 @@
           <div class="form-group">
             <input type="password" v-model.trim="password2" class="form-control" placeholder="비밀번호 재확인">
           </div>
-          <!-- Nickname Field -->
+          <!-- Age Field -->
           <div class="form-group">
-            <input type="text" v-model.trim="nickname" class="form-control" placeholder="닉네임">
-          </div>
-          <!-- Birth Date Field -->
-          <div class="form-group">
-            <input type="date" v-model="birth_date" class="form-control" placeholder="생년월일">
-          </div>
-          <!-- Gender Field -->
-          <div class="form-group">
-            <select v-model="gender" class="form-control">
-              <option value="">성별 선택</option>
-              <option value="male">남성</option>
-              <option value="female">여성</option>
-            </select>
+              <input type="number" v-model.trim="age" class="form-control" placeholder="나이">
           </div>
           <!-- Email Field -->
           <div class="form-group">
             <input type="email" v-model.trim="email" class="form-control" placeholder="이메일">
           </div>
+          <!-- Gender Field -->
+          <!-- <div class="form-group">
+            <select v-model="gender" class="form-control">
+              <option value="">성별 선택</option>
+              <option value="male">남성</option>
+              <option value="female">여성</option>
+            </select>
+          </div> -->
           <!-- Phone Number Field -->
-          <div class="form-group">
+          <!-- <div class="form-group">
             <input type="text" v-model.trim="phone_number" class="form-control" placeholder="전화번호">
+          </div> -->
+          <!-- Money Field -->
+          <div class="form-group">
+              <input type="number" v-model.trim="money" class="form-control" placeholder="자산">
+          </div>
+          <!-- Salary Field -->
+          <div class="form-group">
+              <input type="number" v-model.trim="salary" class="form-control" placeholder="연봉">
+          </div>
+          <!-- Financial Products Field -->
+          <div class="form-group">
+              <input type="text" v-model.trim="financial_products" class="form-control" placeholder="금융 상품 (쉼표로 구분)">
           </div>
           <!-- Submit Button -->
           <div class="form-group">
@@ -60,10 +72,13 @@ const username = ref('')
 const password1 = ref('')
 const password2 = ref('')
 const nickname = ref('')
-const birth_date = ref('')
-const gender = ref('')
+// const gender = ref('')
+// const phone_number = ref('')
 const email = ref('')
-const phone_number = ref('')
+const age = ref('')
+const money = ref('')
+const salary = ref('')
+const financial_products = ref('')
 
 const signUp = function () {
   const payload = {
@@ -71,12 +86,14 @@ const signUp = function () {
     password1: password1.value,
     password2: password2.value,
     nickname: nickname.value,
-    birth_date: birth_date.value,
-    gender: gender.value,
     email: email.value,
-    phone_number: phone_number.value
+    // gender: gender.value,
+    // phone_number: phone_number.value,
+    age: age.value,
+    money: money.value,
+    salary: salary.value,
+    financial_products: financial_products.value.split(',').map(fp => fp.trim())
   }
-  console.log(nickname.value, birth_date.value,gender.value,phone_number.value)
   store.signUp(payload)
 }
 </script>

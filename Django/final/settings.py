@@ -149,6 +149,7 @@ REST_AUTH = {
 }
 
 AUTH_USER_MODEL = 'accounts.User'
+ACCOUNT_ADAPTER = 'accounts.adapter.CustomAccountAdapter'
 
 ACCOUNT_EMAIL_REQUIRED = False
 ACCOUNT_EMAIL_VERIFICATION = None

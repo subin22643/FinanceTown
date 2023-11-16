@@ -3,8 +3,14 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 class User(AbstractUser):
     username = models.CharField(max_length=30, unique=True)
-    nickname = models.CharField(max_length=255, blank=True, null=True)
+    nickname = models.CharField(max_length=30, blank=True, null=True)
     email = models.EmailField(max_length=254, blank=True, null=True)
+    # GENDER_CHOICES = (
+    #     ('male', '남성'),
+    #     ('female', '여성'),
+    # )
+    # gender = models.CharField(max_length=10, choices=GENDER_CHOICES, blank=True, null=True)
+    # phone_number = models.CharField(max_length=20, blank=True, null=True)
     age = models.IntegerField(blank=True, null=True)
     money = models.IntegerField(blank=True, null=True)
     salary = models.IntegerField(blank=True, null=True)

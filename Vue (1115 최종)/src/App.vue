@@ -1,9 +1,6 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <RouterLink class="navbar-brand" :to="{ name: 'main' }">수길이네 금융마을</RouterLink>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
@@ -19,7 +16,7 @@
           <RouterLink class="nav-link" :to="{ name: 'BoardView' }">커뮤니티 게시판</RouterLink>
         </li>
       </ul>
-      <template v-if="store.isLogin">
+      <template v-if="!store.isLogin">
         <div class="navbar-nav">
           <RouterLink :to="{ name:'LogIn' }" class="nav-item nav-link">로그인</RouterLink>
           <RouterLink :to="{ name:'SignUp' }" class="nav-item nav-link">회원가입</RouterLink>          
@@ -47,7 +44,7 @@
   const store = useUserStore()
 
   const logOut = function () {
-    store.logOut
+    store.logOut()
   }
 </script>
 

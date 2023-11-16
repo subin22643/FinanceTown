@@ -10,8 +10,8 @@
 // 문자로 입력시 '숫자로 입력하세요' 텍스트 추가하고 인풋값 초기화
 
 
-import { useExchangeStore } from '../stores/exchange'
-import ExchangeRateListItem from './ExchangeRateListItem.vue';
+import { useExchangeStore } from '@/stores/exchange'
+import ExchangeRateListItem from '@/components/Exchange/ExchangeRateListItem.vue';
 import { ref, watch } from 'vue';
 
 const store = useExchangeStore()

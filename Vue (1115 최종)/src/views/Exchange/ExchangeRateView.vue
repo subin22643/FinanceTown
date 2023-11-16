@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted } from 'vue'
-import { useExchangeStore } from '../stores/exchange'
-import ExchangeRateList from '@/components/ExchangeRateList.vue'
+import { useExchangeStore } from '@/stores/exchange'
+import ExchangeRateList from '@/components/Exchange/ExchangeRateList.vue'
 
 
 // const URL = 'https://www.koreaexim.go.kr/site/program/financial/exchangeJSON'

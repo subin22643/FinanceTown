@@ -30,10 +30,10 @@ class CustomRegisterSerializer(RegisterSerializer):
       'nickname': self.validated_data.get('nickname', ''),
       'age': self.validated_data.get('age', ''),
       'money': self.validated_data.get('money', ''),
-    #   'gender': self.validated_data.get('gender', ''),
-    #   'phone_number': self.validated_data.get('phone_number', ''),
+      'gender': self.validated_data.get('gender', ''),
+      'phone_number': self.validated_data.get('phone_number', ''),
       'salary': self.validated_data.get('salary', ''),
-      'financial_products': self.validated_data.get('financial_products', ''),
+    #   'financial_products': self.validated_data.get('financial_products', ''),
       }
     
     def save(self, request):

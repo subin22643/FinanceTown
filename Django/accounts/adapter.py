@@ -15,12 +15,12 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         email = data.get("email")
         username = data.get("username")
         nickname = data.get("nickname")
-        # gender = data.get("gender")
-        # phone_number = data.get("phone_number")
+        gender = data.get("gender")
+        phone_number = data.get("phone_number")
         age = data.get("age")
         money = data.get("money")
         salary = data.get("salary")
-        financial_product = data.get("financial_products")
+        # financial_product = data.get("financial_products")
         
         user_email(user, email)
         user_username(user, username)
@@ -30,10 +30,10 @@ class CustomAccountAdapter(DefaultAccountAdapter):
             user_field(user, "last_name", last_name)
         if nickname:
             user_field(user, "nickname", nickname)
-        # if gender:
-        #     user_field(user, "gender", gender)
-        # if phone_number:
-        #     user.phone_number = phone_number
+        if gender:
+            user_field(user, "gender", gender)
+        if phone_number:
+            user.phone_number = phone_number
         if age:
             user.age = age
         if money:
@@ -41,13 +41,13 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         if salary:
             user.salary = salary
        
-        if financial_product:
-            financial_products = user.financial_products.split(',')
-            financial_products.append(financial_product)
+        # if financial_product:
+        #     financial_products = user.financial_products.split(',')
+        #     financial_products.append(financial_product)
        
-            if len(financial_products) > 1:
-                financial_products = ','.join(financial_products)
-            user_field(user, "financial_products", financial_products)
+        #     if len(financial_products) > 1:
+        #         financial_products = ','.join(financial_products)
+        #     user_field(user, "financial_products", financial_products)
         if "password1" in data:
             user.set_password(data["password1"])
         else:

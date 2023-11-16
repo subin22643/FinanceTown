@@ -30,17 +30,17 @@
             <input type="email" v-model.trim="email" class="form-control" placeholder="이메일">
           </div>
           <!-- Gender Field -->
-          <!-- <div class="form-group">
+          <div class="form-group">
             <select v-model="gender" class="form-control">
               <option value="">성별 선택</option>
               <option value="male">남성</option>
               <option value="female">여성</option>
             </select>
-          </div> -->
+          </div>
           <!-- Phone Number Field -->
-          <!-- <div class="form-group">
+          <div class="form-group">
             <input type="text" v-model.trim="phone_number" class="form-control" placeholder="전화번호">
-          </div> -->
+          </div>
           <!-- Money Field -->
           <div class="form-group">
               <input type="number" v-model.trim="money" class="form-control" placeholder="자산">
@@ -72,8 +72,8 @@ const username = ref('')
 const password1 = ref('')
 const password2 = ref('')
 const nickname = ref('')
-// const gender = ref('')
-// const phone_number = ref('')
+const gender = ref('')
+const phone_number = ref('')
 const email = ref('')
 const age = ref('')
 const money = ref('')
@@ -87,12 +87,12 @@ const signUp = function () {
     password2: password2.value,
     nickname: nickname.value,
     email: email.value,
-    // gender: gender.value,
-    // phone_number: phone_number.value,
+    gender: gender.value,
+    phone_number: phone_number.value,
     age: age.value,
     money: money.value,
     salary: salary.value,
-    financial_products: financial_products.value.split(',').map(fp => fp.trim())
+    // financial_products: financial_products.value.split(',').map(fp => fp.trim())
   }
   store.signUp(payload)
 }

@@ -17,20 +17,22 @@ export const useUserStore = defineStore('counter', () => {
   })
 
   const signUp = function (payload) {
-    console.log(payload.nickname, payload.birth_date, payload.gender, payload.phone_number)
-
+    console.log(payload)
+    // path('dj-rest-auth/', include('dj_rest_auth.urls')),
+    // path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
     const { username, password1, password2, nickname,
-      email, age, money, salary, financial_products  } = payload
+      email, gender, phone_number, age, money, salary } = payload
 
     axios({
       method: 'post',
       url: `${API_URL}/accounts/signup/`,
       data: {
         username, password1, password2, nickname,
-      email, age, money, salary, financial_products
+      email, age, money, salary
       }
     })
     .then((res) => {
+      console.log(res)
       const password = password1
       logIn({ username, password })
     })
@@ -44,7 +46,7 @@ export const useUserStore = defineStore('counter', () => {
 
     axios({
       method: 'post',
-      url: `${API_URL}/dj-rest-auth/login/`,
+      url: `${API_URL}/accounts/login/`,
       data: {
         username, password
       }
@@ -62,7 +64,7 @@ export const useUserStore = defineStore('counter', () => {
   const logOut = function () {
     axios({
       method: 'post',
-      url: `${API_URL}/dj-rest-auth/logout/`,
+      url: `${API_URL}/accounts/logout/`,
     })
       .then((res) => {
         token.value = null

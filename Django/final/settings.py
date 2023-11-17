@@ -146,6 +146,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_AUTH = {
     'REGISTER_SERIALIZER': 'accounts.serializers.CustomRegisterSerializer',
+    'TOKEN_SERIALIZER': 'accounts.serializers.CustomTokenSerializer',
 }
 
 AUTH_USER_MODEL = 'accounts.User'

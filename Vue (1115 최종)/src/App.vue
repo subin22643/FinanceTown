@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand navbar-light bg-light">
     <RouterLink class="navbar-brand" :to="{ name: 'main' }">수길이네 금융마을</RouterLink>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mr-auto">
@@ -24,9 +24,9 @@
       </template>
       <template v-else>
         <div class="navbar-nav">
-          <p class="nav-item nav-link">{{  }} 님 환영합니다.</p> 
+          <p class="nav-item nav-link">{{ store.pageNickname }}님 환영합니다.</p> 
+          <RouterLink :to="{ name:'Profile' }" class="nav-item nav-link">프로필 보기</RouterLink>          
           <!-- <RouterLink :to="{ name:'UserUpdate' }" class="nav-item nav-link">회원정보수정</RouterLink>           -->
-
           <a class="nav-item nav-link" href="#" @click="logOut">로그아웃</a>
         </div>
       </template>
@@ -37,12 +37,13 @@
   </div>
 </template>
 
+
+
 <script setup>
   import { RouterLink, RouterView } from 'vue-router'
   import { useUserStore } from '@/stores/user';
-
+  
   const store = useUserStore()
-
   const logOut = function () {
     store.logOut()
   }

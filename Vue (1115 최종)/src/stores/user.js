@@ -3,10 +3,11 @@ import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 
-export const useUserStore = defineStore('counter', () => {
+export const useUserStore = defineStore('user', () => {
   const router = useRouter()
   const API_URL = 'http://127.0.0.1:8000'
   const token = ref(null)
+  const pageNickname = ref('')
 
   const isLogin = computed(() => {
     if (token.value === null) {
@@ -17,24 +18,23 @@ export const useUserStore = defineStore('counter', () => {
   })
 
   const signUp = function (payload) {
-    console.log(payload)
-    // path('dj-rest-auth/', include('dj_rest_auth.urls')),
-    // path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
     const { username, password1, password2, nickname,
       email, gender, phone_number, age, money, salary } = payload
 
+    console.log(payload)
     axios({
       method: 'post',
       url: `${API_URL}/accounts/signup/`,
       data: {
         username, password1, password2, nickname,
-      email, age, money, salary
+      email, gender, phone_number, age, money, salary
       }
     })
     .then((res) => {
-      console.log(res)
-      const password = password1
-      logIn({ username, password })
+      router.push({name: 'Complete'})
+      // 회원가입 후 자동 로그인
+      // const password = password1
+      // logIn({ username, password })
     })
     .catch((err) => {
       console.log(err)
@@ -43,7 +43,7 @@ export const useUserStore = defineStore('counter', () => {
 
   const logIn = function (payload) {
     const { username, password } = payload
-
+    
     axios({
       method: 'post',
       url: `${API_URL}/accounts/login/`,
@@ -52,7 +52,7 @@ export const useUserStore = defineStore('counter', () => {
       }
     })
       .then((res) => {
-        console.log(res.data)
+        pageNickname.value = res.data.nickname
         token.value = res.data.key
         router.push({ name: 'main' })
       })
@@ -60,6 +60,7 @@ export const useUserStore = defineStore('counter', () => {
         console.log(err)
       })
   }
+
 
   const logOut = function () {
     axios({
@@ -76,5 +77,5 @@ export const useUserStore = defineStore('counter', () => {
       })
   }
 
-  return { API_URL, signUp, logIn, token, isLogin, logOut }
+  return { API_URL, token, isLogin, pageNickname, signUp, logIn, logOut }
 }, { persist: true })

@@ -21,6 +21,9 @@ import ProductBoard from '@/views/Board/ProductBoardView.vue'
 //로그인
 import SignUpView from '@/views/User/SignUpView.vue'
 import LogInView from '@/views/User/LogInView.vue'
+import CompleteView from '@/views/User/CompleteView.vue'
+import UserUpdateView from '@/views/User/UserUpdateView.vue'
+import ProfileView from '@/views/User/ProfileView.vue'
 
 
 const router = createRouter({
@@ -87,15 +90,26 @@ const router = createRouter({
       component: SignUpView
     },
     {
+      path: '/complete',
+      name: 'Complete',
+      component: CompleteView
+    },
+    {
       path: '/login',
       name: 'LogIn',
       component: LogInView
-    }
-    // {
-    //   path: '/user/update',
-    //   name: 'UserUpdate',
-    //   component: LogInView
-    // }
+    },
+    {
+      path: '/profile',
+      name: 'Profile',
+      component: ProfileView
+    },
+    {
+      path: '/user/update/:profileData',
+      name: 'UserUpdate',
+      component: UserUpdateView,
+    },
+    
   ]
 })
 

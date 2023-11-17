@@ -12,7 +12,7 @@
           </div>
           <div class="form-group">
             <label for="password1" class="form-label">비밀번호</label>
-            <input id="password1" type="text" v-model.trim="password" class="form-control">
+            <input id="password1" type="password" v-model.trim="password" class="form-control">
           </div>
           <div class="form-group">
             <button type="submit" class="btn btn-submit">로그인</button>

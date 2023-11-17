@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     username = models.CharField(max_length=30, unique=True)
     nickname = models.CharField(max_length=30, blank=True, null=True)
-    email = models.EmailField(max_length=254, blank=True, null=True)
+    email = models.EmailField(max_length=254, blank=True, null=True, unique=True)
     GENDER_CHOICES = (
         ('male', '남성'),
         ('female', '여성'),

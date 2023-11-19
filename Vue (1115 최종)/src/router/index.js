@@ -105,7 +105,7 @@ const router = createRouter({
       component: ProfileView
     },
     {
-      path: '/user/update/:profileData',
+      path: '/user/update',
       name: 'UserUpdate',
       component: UserUpdateView,
     },

@@ -9,7 +9,7 @@
         <form class="signup-form">
           <!-- Username Field -->
           <div class="form-group">
-            <input type="text" v-model.trim="username" class="form-control" placeholder="아이디" readonly>
+            <input type="text" v-model.trim="profileData.username" class="form-control" placeholder="아이디" readonly>
           </div>
           <!-- Nickname Field -->
           <div class="form-group">
@@ -65,7 +65,7 @@
           <!-- Financial Products Field -->
           <div class="form-group">
             <label for="financial_products">금융 상품</label>
-            <input id="financial_products" type="text" v-model.trim="financial_products" class="form-control" readonly>
+            <input id="financial_products" type="text" v-model.trim="profileData.financial_products" class="form-control" readonly>
           </div>
         </form>
       </div>
@@ -74,47 +74,24 @@
 </template>
 
 <script setup>
-import axios from 'axios';
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
-
 const store = useUserStore()
+const profileData =  ref('')
+
+onMounted(() => {
+  store.setProfileData();
+  profileData.value = store.profileData;
+});
 
 
 const goToEditPage = () => {
-  router.push({ name: 'UserUpdate', params: { profileData: profileData.value } }); // 여기에 실제 수정 페이지의 라우트 경로를 넣어야 합니다.
-};
-const profileData = ref({
-  username: '',
-  nickname: '',
-  password1: '',
-  password2: '',
-  age: '',
-  email: '',
-  gender: '',
-  phone_number: '',
-  money: '',
-  salary: '',
-  // financial_products: ''
-});
+  router.push({ name: 'UserUpdate'});
+}
 
-// 처음 1회 profile 요청
-axios({
-    method: 'get',
-    url: `${store.API_URL}/accounts/profile/`,
-    headers: {
-      'Authorization': `Token ${store.token}`
-    }
-  })
-  .then((res) => {
-    Object.assign(profileData.value, res.data);
-  })
-  .catch((err) => {
-    console.log(err)
-  })
 </script>
 
 

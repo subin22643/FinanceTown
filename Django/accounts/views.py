@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
-from .serializers import CustomDetailSerializer
+from .serializers import CustomDetailSerializer, CustomRegisterSerializer
 
 @api_view(['GET','PUT','DELETE'])
 def profile(request):
@@ -13,8 +13,8 @@ def profile(request):
       return Response(serializer.data)
    
    if request.method == 'PUT':
-      serializer = CustomDetailSerializer(user,data=request.data)
+      # print(request.data)
+      serializer = CustomDetailSerializer(user, data=request.data, partial=True)
       if serializer.is_valid(raise_exception=True):
-         serializer.save()
-         return Response(serializer.data)
-
+          serializer.save()
+          return Response(serializer.data)

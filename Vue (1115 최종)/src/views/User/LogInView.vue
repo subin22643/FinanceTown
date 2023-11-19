@@ -9,10 +9,14 @@
           <div class="form-group">
             <label for="username" class="form-label">ID</label>
             <input id="username" type="text" v-model.trim="username" class="form-control">
+            <div v-if="store.errorMessages.username" class="error-message">{{ store.errorMessages.username }}</div>
+            <div v-if="store.errorMessages.non_field_errors" class="error-message">{{ store.errorMessages.non_field_errors}}</div>
           </div>
           <div class="form-group">
             <label for="password1" class="form-label">비밀번호</label>
             <input id="password1" type="password" v-model.trim="password" class="form-control">
+            <div v-if="store.errorMessages.password" class="error-message">{{ store.errorMessages.password }}</div>
+            <div v-if="store.errorMessages.non_field_errors" class="error-message">{{ store.errorMessages.non_field_errors}}</div>
           </div>
           <div class="form-group">
             <button type="submit" class="btn btn-submit">로그인</button>
@@ -24,8 +28,9 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
+import {  } from 'vue';
 
 const store = useUserStore()
 const username = ref(null)
@@ -38,6 +43,11 @@ const logIn = function () {
   }
   store.logIn(payload)
 }
+
+onMounted(() => {
+  store.clearErrorMessages()
+})
+
 </script>
 
 <style scoped>
@@ -87,6 +97,11 @@ const logIn = function () {
 
 .btn-submit:hover {
   background-color: #008bdc; /* Slightly darker on hover */
+}
+.error-message {
+    color: red;
+    font-size: 0.8em;
+    margin-top: 5px;
 }
 
 /* Responsive adjustments */

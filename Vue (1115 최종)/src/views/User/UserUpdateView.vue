@@ -5,14 +5,15 @@
         <div class="text-center mb-4">
           <h2 class="brand-title d-inline-block mr-3">수길이네 금융마을</h2>
         </div>
-        <form class="signup-form" @click="update">
+        <form class="signup-form" @submit.prevent="update">
           <!-- Username Field -->
           <div class="form-group">
-            <input type="text" v-model.trim="username" class="form-control" placeholder="아이디" >
+            <input type="text" v-model.trim="profileData.username" class="form-control" placeholder="아이디" readonly>
           </div>
            <!-- Nickname Field -->
            <div class="form-group">
-            <input type="text" v-model.trim="nickname" class="form-control" placeholder="닉네임" >
+            <input type="text" v-model.trim="profileData.nickname" class="form-control" placeholder="닉네임" >
+            <div v-if="store.errorMessages.nickname" class="error-message">{{ store.errorMessages.nickname }}</div>
           </div>
           <!-- Password Fields -->
           <!-- <div class="form-group">
@@ -23,15 +24,17 @@
           </div> -->
           <!-- Age Field -->
           <div class="form-group">
-              <input type="number" v-model.trim="age" class="form-control" placeholder="나이" >
+              <input type="number" v-model.trim="profileData.age" class="form-control" placeholder="나이" >
+              <div v-if="store.errorMessages.age" class="error-message">{{ store.errorMessages.age }}</div>
           </div>
           <!-- Email Field -->
           <div class="form-group">
-            <input type="email" v-model.trim="email" class="form-control" placeholder="이메일" >
+            <input type="email" v-model.trim="profileData.email" class="form-control" placeholder="이메일" >
+            <div v-if="store.errorMessages.email" class="error-message">{{ store.errorMessages.email }}</div>
           </div>
           <!-- Gender Field -->
           <div class="form-group">
-            <select v-model="gender" class="form-control" readonly>
+            <select v-model="profileData.gender" class="form-control">
               <option value="">성별 선택</option>
               <option value="male">남성</option>
               <option value="female">여성</option>
@@ -39,20 +42,24 @@
           </div>
           <!-- Phone Number Field -->
           <div class="form-group">
-            <input type="text" v-model.trim="phone_number" class="form-control" placeholder="전화번호" >
+            <input type="text" v-model.trim="profileData.phone_number" class="form-control" placeholder="전화번호" >
+            <div v-if="store.errorMessages.phone_number" class="error-message">{{ store.errorMessages.phone_number }}</div>
           </div>
           <!-- Money Field -->
           <div class="form-group">
-              <input type="number" v-model.trim="money" class="form-control" placeholder="자산" >
+              <input type="number" v-model.trim="profileData.money" class="form-control" placeholder="자산" >
+              <div v-if="store.errorMessages.money" class="error-message">{{ store.errorMessages.money }}</div>
           </div>
           <!-- Salary Field -->
           <div class="form-group">
-              <input type="number" v-model.trim="salary" class="form-control" placeholder="연봉" >
+            <input type="number" v-model.trim="profileData.salary" class="form-control" placeholder="연봉" >
+            <div v-if="store.errorMessages.salary" class="error-message">{{ store.errorMessages.salary }}</div>
           </div>
           <!-- Financial Products Field -->
           <div class="form-group">
-              <input type="text" v-model.trim="financial_products" class="form-control" placeholder="금융 상품 (쉼표로 구분)" >
-          </div>
+              <input type="text" v-model.trim="profileData.financial_products" class="form-control" placeholder="금융 상품 (쉼표로 구분)" >
+              <div v-if="store.errorMessages.financial_products" class="error-message">{{ store.errorMessages.financial_products }}</div>
+            </div>
           <!-- Submit Button -->
           <div class="form-group">
             <button type="submit" class="btn btn-submit">수정 하기</button>
@@ -64,73 +71,19 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
-import { useRoute } from 'vue-router';
-import axios from 'axios';
 
+const store = useUserStore()
+const profileData = store.profileData
 
-const route = useRoute()
-console.log(route.profileData)
-
-const username = route.params.info
-// const password1 = ref('')
-// const password2 = ref('')
-const nickname = ref('')
-const gender = ref('')
-const phone_number = ref('')
-const email = ref('')
-const age = ref('')
-const money = ref('')
-const salary = ref('')
-// const financial_products = ref('')
-
-const update = function () {
-  const payload = {
-    username: username.value,
-    // password1: password1.value,
-    // password2: password2.value,
-    nickname: nickname.value,
-    email: email.value,
-    gender: gender.value,
-    phone_number: phone_number.value,
-    age: age.value,
-    money: money.value,
-    salary: salary.value,
-    // financial_products: financial_products.value.split(',').map(fp => fp.trim())
-  }
+const update = () => {
+  store.update()
 }
 
-
-// profile update 요청
-// const update = () =>{
-//   axios({
-//     method: 'put',
-//     url: `${store.API_URL}/accounts/profile/`,
-//     data : {
-//       username: profileData.username,
-//       nickname: profileData.nickname,
-//       // password1: profileData.password1,
-//       // password2: profileData.password2,
-//       age: profileData.age,
-//       email: profileData.email,
-//       gender: profileData.gender,
-//       phone_number: profileData.phone_number,
-//       money: profileData.money,
-//       salary: profileData.salary,
-//       // financial_products: profileData.financial_products,
-//     },
-//     headers: {
-//       'Authorization': `Token ${store.token}`
-//     }
-//   })
-//   .then((res) => {
-//     Object.assign(profileData.value, res.data);
-//   })
-//   .catch((err) => {
-//     console.log(err)
-//   })
-// }
+onMounted(() => {
+  store.clearErrorMessages()
+})
 
 </script>
 
@@ -177,6 +130,12 @@ const update = function () {
   color: white;
   margin-top: 20px; /* Space above the button */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.error-message {
+    color: red;
+    font-size: 0.8em;
+    margin-top: 5px;
 }
 
 .btn-submit:hover {

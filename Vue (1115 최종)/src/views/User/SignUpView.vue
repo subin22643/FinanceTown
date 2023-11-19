@@ -9,25 +9,32 @@
           <!-- Username Field -->
           <div class="form-group">
             <input type="text" v-model.trim="username" class="form-control" placeholder="아이디">
+            <div v-if="store.errorMessages.username" class="error-message">{{ store.errorMessages.username }}</div>
           </div>
            <!-- Nickname Field -->
            <div class="form-group">
             <input type="text" v-model.trim="nickname" class="form-control" placeholder="닉네임">
+            <div v-if="store.errorMessages.nickname" class="error-message">{{ store.errorMessages.nickname }}</div>
           </div>
           <!-- Password Fields -->
           <div class="form-group">
             <input type="password" v-model.trim="password1" class="form-control" placeholder="비밀번호">
+            <div v-if="store.errorMessages.password1" class="error-message">{{ store.errorMessages.password1 }}</div>
           </div>
           <div class="form-group">
             <input type="password" v-model.trim="password2" class="form-control" placeholder="비밀번호 재확인">
+            <div v-if="store.errorMessages.password2" class="error-message">{{ store.errorMessages.password2 }}</div>
           </div>
           <!-- Age Field -->
           <div class="form-group">
-              <input type="number" v-model.trim="age" class="form-control" placeholder="나이">
+            <input type="number" v-model.trim="age" class="form-control" placeholder="나이">
+            <div v-if="store.errorMessages.age" class="error-message">{{ store.errorMessages.age }}</div>
+
           </div>
           <!-- Email Field -->
           <div class="form-group">
             <input type="email" v-model.trim="email" class="form-control" placeholder="이메일">
+            <div v-if="store.errorMessages.email" class="error-message">{{ store.errorMessages.email }}</div>
           </div>
           <!-- Gender Field -->
           <div class="form-group">
@@ -39,19 +46,23 @@
           </div>
           <!-- Phone Number Field -->
           <div class="form-group">
-            <input type="text" v-model.trim="phone_number" class="form-control" placeholder="전화번호">
+            <input type="text" v-model.trim="phone_number" class="form-control" placeholder="전화번호(ex.010-0000-000)">
+            <div v-if="store.errorMessages.phone_number" class="error-message">{{ store.errorMessages.phone_number }}</div>
           </div>
           <!-- Money Field -->
           <div class="form-group">
-              <input type="number" v-model.trim="money" class="form-control" placeholder="자산">
+            <input type="number" v-model.trim="money" class="form-control" placeholder="자산">
+            <div v-if="store.errorMessages.money" class="error-message">{{ store.errorMessages.money }}</div>
           </div>
           <!-- Salary Field -->
           <div class="form-group">
-              <input type="number" v-model.trim="salary" class="form-control" placeholder="연봉">
+            <input type="number" v-model.trim="salary" class="form-control" placeholder="연봉">
+            <div v-if="store.errorMessages.salary" class="error-message">{{ store.errorMessages.salary }}</div>
           </div>
           <!-- Financial Products Field -->
           <div class="form-group">
               <input type="text" v-model.trim="financial_products" class="form-control" placeholder="금융 상품 (쉼표로 구분)">
+              <div v-if="store.errorMessages.financial_products" class="error-message">{{ store.errorMessages.financial_products }}</div>
           </div>
           <!-- Submit Button -->
           <div class="form-group">
@@ -64,10 +75,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
 
 const store = useUserStore()
+
 const username = ref('')
 const password1 = ref('')
 const password2 = ref('')
@@ -96,6 +108,12 @@ const signUp = function () {
   }
   store.signUp(payload)
 }
+
+//에러메시지 초기화 안하면 다시 회원가입페이지로 와도 계속 남아있음
+onMounted(() => {
+  store.clearErrorMessages()
+})
+
 </script>
 
 <style scoped>
@@ -147,6 +165,12 @@ const signUp = function () {
   background-color: #008bdc; /* Slightly darker on hover */
 }
 
+.error-message {
+    color: red;
+    font-size: 0.8em;
+    margin-top: 5px;
+}
+
 /* Responsive adjustments */
 @media (max-width: 576px) {
   .container {
@@ -161,4 +185,5 @@ const signUp = function () {
     padding: 15px;
   }
 }
+
 </style>

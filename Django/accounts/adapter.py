@@ -28,6 +28,8 @@ class CustomAccountAdapter(DefaultAccountAdapter):
             user_field(user, "first_name", first_name)
         if last_name:
             user_field(user, "last_name", last_name)
+        if email:
+            user_field(user, "email", email)
         if nickname:
             user_field(user, "nickname", nickname)
         if gender:

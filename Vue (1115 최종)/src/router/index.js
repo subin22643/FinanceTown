@@ -18,12 +18,14 @@ import BoardCreate from '@/views/Board/BoardCreateView.vue'
 import FinanceBoard from '@/views/Board/FinanceBoardView.vue'
 import ProductBoard from '@/views/Board/ProductBoardView.vue'
 
+
 //로그인
 import SignUpView from '@/views/User/SignUpView.vue'
 import LogInView from '@/views/User/LogInView.vue'
-import CompleteView from '@/views/User/CompleteView.vue'
 import UserUpdateView from '@/views/User/UserUpdateView.vue'
 import ProfileView from '@/views/User/ProfileView.vue'
+import DeleteView from '@/views/User/DeleteView.vue'
+import PasswordChangeView from '@/views/User/PasswordChangeView.vue'
 
 
 const router = createRouter({
@@ -90,11 +92,6 @@ const router = createRouter({
       component: SignUpView
     },
     {
-      path: '/complete',
-      name: 'Complete',
-      component: CompleteView
-    },
-    {
       path: '/login',
       name: 'LogIn',
       component: LogInView
@@ -105,11 +102,20 @@ const router = createRouter({
       component: ProfileView
     },
     {
+      path: '/delete',
+      name: 'UserDelete',
+      component: DeleteView
+    },
+    {
+      path: '/passwordChange',
+      name: 'PasswordChange',
+      component: PasswordChangeView
+    },
+    {
       path: '/user/update',
       name: 'UserUpdate',
       component: UserUpdateView,
     },
-    
   ]
 })
 

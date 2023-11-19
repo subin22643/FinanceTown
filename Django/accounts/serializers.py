@@ -11,20 +11,21 @@ class CustomDetailSerializer(serializers.ModelSerializer):
         model = User
         fields=('username','nickname', 'email', 'gender', 'phone_number', 'age', 'money', 'salary')
 
-    # def update(self, instance, validated_data):
-    #     print(validated_data)
-    #     instance.nickname = validated_data.get('nickname', instance.nickname)
-    #     instance.email = validated_data.get('email', instance.email)
-    #     instance.gender = validated_data.get('gender', instance.gender)
-    #     instance.phone_number = validated_data.get('phone_number', instance.phone_number)
-    #     instance.age = validated_data.get('age', instance.age)
-    #     instance.money = validated_data.get('money', instance.money)
-    #     instance.salary = validated_data.get('salary', instance.salary)
-    #     # print(instance.nickname, instance.email, instance.gender, instance.phone_number, instance.age)
-    #     instance.save()
-    #     return instance
+    def update(self, instance, validated_data):
+        print(validated_data)
+        instance.nickname = validated_data.get('nickname', instance.nickname)
+        instance.email = validated_data.get('email', instance.email)
+        instance.gender = validated_data.get('gender', instance.gender)
+        instance.phone_number = validated_data.get('phone_number', instance.phone_number)
+        instance.age = validated_data.get('age', instance.age)
+        instance.money = validated_data.get('money', instance.money)
+        instance.salary = validated_data.get('salary', instance.salary)
 
-  
+        # print(instance.nickname, instance.email, instance.gender, instance.phone_number, instance.age)
+        instance.save()
+        return instance
+
+
 class CustomRegisterSerializer(RegisterSerializer):
     # 추가할 필드들을 정의합니다.
     nickname = serializers.CharField(
@@ -43,7 +44,6 @@ class CustomRegisterSerializer(RegisterSerializer):
     money = serializers.IntegerField(required=False)
     salary = serializers.IntegerField(required=False)
     # financial_products = serializers.ListField(child=serializers.IntegerField(), required=False)
-
 
     def get_cleaned_data(self):
       return {
@@ -85,4 +85,3 @@ class CustomTokenSerializer(serializers.ModelSerializer):
     class Meta:
       model = Token
       fields = ('key', 'user', 'username','nickname','email')
-

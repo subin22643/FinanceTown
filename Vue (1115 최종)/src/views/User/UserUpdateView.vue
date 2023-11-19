@@ -47,8 +47,8 @@
           </div>
           <!-- Money Field -->
           <div class="form-group">
-              <input type="number" v-model.trim="profileData.money" class="form-control" placeholder="자산" >
-              <div v-if="store.errorMessages.money" class="error-message">{{ store.errorMessages.money }}</div>
+            <input type="number" v-model.trim="profileData.money" class="form-control" placeholder="자산" >
+            <div v-if="store.errorMessages.money" class="error-message">{{ store.errorMessages.money }}</div>
           </div>
           <!-- Salary Field -->
           <div class="form-group">
@@ -57,9 +57,9 @@
           </div>
           <!-- Financial Products Field -->
           <div class="form-group">
-              <input type="text" v-model.trim="profileData.financial_products" class="form-control" placeholder="금융 상품 (쉼표로 구분)" >
-              <div v-if="store.errorMessages.financial_products" class="error-message">{{ store.errorMessages.financial_products }}</div>
-            </div>
+            <input type="text" v-model.trim="profileData.financial_products" class="form-control" placeholder="금융 상품 (쉼표로 구분)" >
+            <div v-if="store.errorMessages.financial_products" class="error-message">{{ store.errorMessages.financial_products }}</div>
+          </div>
           <!-- Submit Button -->
           <div class="form-group">
             <button type="submit" class="btn btn-submit">수정 하기</button>
@@ -71,6 +71,7 @@
 </template>
 
 <script setup>
+
 import { onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
 
@@ -137,6 +138,7 @@ onMounted(() => {
     font-size: 0.8em;
     margin-top: 5px;
 }
+
 
 .btn-submit:hover {
   background-color: #008bdc; /* Slightly darker on hover */

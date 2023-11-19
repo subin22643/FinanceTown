@@ -38,7 +38,6 @@
 </template>
 
 
-
 <script setup>
   import { RouterLink, RouterView } from 'vue-router'
   import { useUserStore } from '@/stores/user';
@@ -48,6 +47,7 @@
     store.logOut()
   }
 </script>
+
 
 <style scoped>
 .navbar {

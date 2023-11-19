@@ -30,7 +30,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
-import {  } from 'vue';
 
 const store = useUserStore()
 const username = ref(null)

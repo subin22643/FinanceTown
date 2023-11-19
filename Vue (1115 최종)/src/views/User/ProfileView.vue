@@ -4,7 +4,9 @@
       <div class="col-md-6">
         <div class="text-center mb-4">
           <h2 class="brand-title d-inline-block mr-3">수길이네 금융마을</h2>
-          <button class="btn btn-edit" @click="goToEditPage">수정하기</button>
+          <button class="btn btn-edit" @click="goToUpdatePage">수정하기</button>
+          <button class="btn btn-edit" @click="goToPasswordChangePage">비밀번호변경</button>
+          <button class="btn btn-edit" @click="goToDeletePage">회원탈퇴</button>
         </div>
         <form class="signup-form">
           <!-- Username Field -->
@@ -88,9 +90,18 @@ onMounted(() => {
 });
 
 
-const goToEditPage = () => {
+const goToUpdatePage = () => {
   router.push({ name: 'UserUpdate'});
 }
+
+const goToPasswordChangePage = () => {
+  router.push({ name: 'PasswordChange'});
+}
+
+const goToDeletePage = () => {
+  router.push({ name: 'UserDelete'});
+}
+
 
 </script>
 

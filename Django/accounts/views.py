@@ -18,3 +18,8 @@ def profile(request):
       if serializer.is_valid(raise_exception=True):
           serializer.save()
           return Response(serializer.data)
+      
+   if request.method == 'DELETE':
+      user = request.user
+      user.delete()
+      return Response(status=status.HTTP_204_NO_CONTENT)

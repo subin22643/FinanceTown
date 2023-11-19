@@ -143,10 +143,10 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-
 REST_AUTH = {
     'REGISTER_SERIALIZER': 'accounts.serializers.CustomRegisterSerializer',
     'TOKEN_SERIALIZER': 'accounts.serializers.CustomTokenSerializer',
+    'OLD_PASSWORD_FIELD_ENABLED': True, #비밀번호 변경 시 기존 비밀번호인 old_password도 확인하겠다는 코드 
 }
 
 AUTH_USER_MODEL = 'accounts.User'
@@ -156,3 +156,4 @@ ACCOUNT_EMAIL_REQUIRED = False
 ACCOUNT_EMAIL_VERIFICATION = None
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+

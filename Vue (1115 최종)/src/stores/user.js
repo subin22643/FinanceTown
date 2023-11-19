@@ -23,10 +23,13 @@ export const useUserStore = defineStore('user', () => {
     age: '',
     money: '',
     salary: '',
-    non_field_errors: '' //dj-rest-auth 라이브러리 사용시 에러 메시지 필드명
+    old_password:'',  //dj-rest-auth 라이브러리 사용시 비밀번호 변경 에러 메시지 필드명
+    new_password2:'', //dj-rest-auth 라이브러리 사용시 비밀번호 변경 에러 메시지 필드명
+    non_field_errors: '' //dj-rest-auth 라이브러리 사용시 로그인 데이터 불일치 에러 메시지 필드명
     // financial_products: ''
   })
   
+
   //에러메시지 초기화
   const clearErrorMessages = () => {
     for (const key in errorMessages.value) {
@@ -58,6 +61,7 @@ export const useUserStore = defineStore('user', () => {
     }
   })
 
+
   //회원가입
   const signUp = function (payload) {
     const { username, password1, password2, nickname,
@@ -72,63 +76,45 @@ export const useUserStore = defineStore('user', () => {
       }
     })
     .then((res) => {
-      console.log("회원가입 성공")
-      router.push({name: 'Complete'})
+      alert("회원가입 성공")
+      router.push({name: 'LogIn'})
 
       // 회원가입 후 자동 로그인
       // const password = password1
       // logIn({ username, password })
     })
     .catch(err => {
+      console.log(err)
       setErrorMessages(err)
-      //   if (err.response && err.response.data) {
-      //   const errors = err.response.data;
-      //   for (const key in errorMessages.value) {
-      //     if (errors.hasOwnProperty(key)) {
-      //       errorMessages.value[key] = errors[key].join(', ')
-      //     } else {
-      //       errorMessages.value[key] = '' // 에러가 없는 경우 빈 문자열로 초기화
-      //     }
-      //   }
-      // }
       })
   }
 
-  // 로그인
-  const logIn = function (payload) {
-    const { username, password } = payload
+
+// 로그인
+const logIn = function (payload) {
+  const { username, password } = payload
     
-    return axios({
-      method: 'post',
-      url: `${API_URL}/accounts/login/`,
-      data: {
-        username, password
-      }
-    })
+  return axios({
+    method: 'post',
+    url: `${API_URL}/accounts/login/`,
+    data: {
+      username, password
+    }
+  })
       .then((res) => {
         pageNickname.value = res.data.nickname
         token.value = res.data.key
-        setProfileData() //로그인 할 때 프로필 정보 받아오기
+        setProfileData() // 로그인 할 때 프로필 정보 받아오기
         router.push({ name: 'main' })
         // console.log(profileData.value)
       })
       .catch((err) => {
         setErrorMessages(err)
-        // console.log(err)
-      //   if (err.response && err.response.data) {
-      //   const errors = err.response.data;
-      //   for (const key in errorMessages.value) {
-      //     if (errors.hasOwnProperty(key)) {
-      //       errorMessages.value[key] = errors[key].join(', ')
-      //     } else {
-      //       errorMessages.value[key] = ''
-      //     }
-      //   }
-      // }
       })
   }
 
-  //로그아웃
+
+//로그아웃
   const logOut = function () {
     axios({
       method: 'post',
@@ -137,14 +123,15 @@ export const useUserStore = defineStore('user', () => {
       .then((res) => {
         token.value = null
         profileData.value = ''
-        router.push({ name: 'main' })
+        router.push({ name: 'LogIn' })
       })
       .catch((err) => {
         console.log(err)
       })
   }
 
-  //프로필 정보 가져오기
+
+//프로필 정보 가져오기
   const profileData = ref('')
   const setProfileData = () =>{
     axios({
@@ -162,37 +149,86 @@ export const useUserStore = defineStore('user', () => {
   })
   }
 
-  // profile update 요청
+
+// 프로필 수정 요청
   const update = () =>{
   // console.log(profileData)
     axios({
     method: 'put',
     url: `${API_URL}/accounts/profile/`,
-    data : profileData.value
-      // username: profileData.username,
-      // nickname: profileData.nickname,
-      // password1: profileData.password1,
-      // password2: profileData.password2,
-      // age: profileData.age,
-      // email: profileData.email,
-      // gender: profileData.gender,
-      // phone_number: profileData.phone_number,
-      // money: profileData.money,
-      // salary: profileData.salary,
-      // financial_products: profileData.financial_products,
-    ,
+    data : profileData.value ,
     headers: {
       'Authorization': `Token ${token.value}`
     }
     })
     .then((res) => {
       console.log(res.data)
+      alert('프로필이 수정되었습니다.')
       router.push({ name: 'Profile' })
     })
     .catch((err) => {
       setErrorMessages(err)
     })
   }
-  return { API_URL, token, isLogin, pageNickname, profileData, errorMessages, 
-    signUp, logIn, logOut, setProfileData, update, clearErrorMessages }
+
+
+//비밀번호 변경
+const passwordChangeData = ref({
+  old_password: '',
+  new_password1: '',
+  new_password2: ''
+})
+
+
+const changePassword = () => {
+  console.log(passwordChangeData.value)
+    axios({
+      method: 'post',
+      url: `${API_URL}/accounts/password/change/`,
+      data: passwordChangeData.value,
+      headers: {
+        'Authorization': `Token ${token.value}`
+      }
+    })
+    .then((res) => {
+        alert('비밀번호가 변경되었습니다.')
+        passwordChangeData.value = {
+          old_password: '',
+          new_password1: '',
+          new_password2: ''
+        }
+        logOut()
+      })
+    .catch((err) =>{
+        console.error(err)
+        setErrorMessages(err)
+        passwordChangeData.value = {
+          old_password: '',
+          new_password1: '',
+          new_password2: ''
+        }
+  })
+}
+
+
+//회원탈퇴
+  const userDelete = function () {
+    axios({
+      method: 'delete',
+      url: `${API_URL}/accounts/profile/`,
+      headers: {
+      'Authorization': `Token ${token.value}`
+    }
+    })
+      .then((res) => {
+        alert('회원탈퇴가 처리되었습니다.')
+        logOut()
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
+  return { API_URL, token, isLogin, pageNickname, profileData, errorMessages, passwordChangeData,
+    signUp, logIn, logOut, setProfileData, update, changePassword, userDelete, clearErrorMessages }
 }, { persist: true })

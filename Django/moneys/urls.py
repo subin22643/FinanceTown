@@ -1,7 +1,7 @@
-from django.urls import path
-from . import views
+# from django.urls import path
+# from . import views
 
-app_name = 'moneys'
-urlpatterns = [
-    path('', views.exchange)
-]
+# app_name = 'moneys'
+# urlpatterns = [
+#     path('', views.exchange)
+# ]

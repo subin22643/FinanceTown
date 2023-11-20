@@ -15,7 +15,7 @@ import ExchangeRate from '@/views/Exchange/ExchangeRateView.vue'
 import BoardView from '@/views/Board/BoardView.vue'
 import BoardDetail from '@/views/Board/BoardDetailView.vue'
 import BoardCreate from '@/views/Board/BoardCreateView.vue'
-import FinanceBoard from '@/views/Board/FinanceBoardView.vue'
+import QnABoard from '@/views/Board/QnABoardView.vue'
 import ProductBoard from '@/views/Board/ProductBoardView.vue'
 
 
@@ -65,14 +65,14 @@ const router = createRouter({
       component: BoardView,
     },
     {
-      path: '/boards/finance',
-      name: 'FinanceBoardView',
-      component: FinanceBoard,
-    },
-    {
       path: '/boards/product',
       name: 'ProductBoardView',
       component: ProductBoard,
+    },
+    {
+      path: '/boards/QnA',
+      name: 'QnABoardView',
+      component: QnABoard,
     },
     {
       path: '/boards/:id',

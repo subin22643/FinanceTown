@@ -40,8 +40,8 @@
           <div class="form-group">
             <select v-model="gender" class="form-control">
               <option value="">성별 선택</option>
-              <option value="male">남성</option>
-              <option value="female">여성</option>
+              <option value="남성">남성</option>
+              <option value="여성">여성</option>
             </select>
           </div>
           <!-- Phone Number Field -->

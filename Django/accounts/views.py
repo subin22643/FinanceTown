@@ -1,9 +1,7 @@
-from django.shortcuts import render,get_object_or_404,get_list_or_404
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from django.views.decorators.csrf import csrf_exempt
-from .serializers import CustomDetailSerializer, CustomRegisterSerializer
+from .serializers import CustomDetailSerializer
 
 @api_view(['GET','PUT','DELETE'])
 def profile(request):

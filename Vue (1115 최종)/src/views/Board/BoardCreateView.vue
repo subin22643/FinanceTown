@@ -5,55 +5,57 @@
       <div>
         <label for="title">제목:</label>
         <input type="text" v-model.trim="title" id="title">
+        <div v-if="store.errorMessages.title" class="error-message">{{ store.errorMessages.title }}</div>
       </div>
       <div>
         <label for="content">내용:</label>
         <textarea v-model.trim="content" id="content"></textarea>
+        <div v-if="store.errorMessages.content" class="error-message">{{ store.errorMessages.content }}</div>
       </div>
+      <div>
+        <label for="category">분류:</label>
+        <select v-model="Category" id="category">
+          <option value="product">금융 상품 리뷰 게시판</option>
+          <option value="QnA">상담 게시판</option>
+        </select>
+      </div>>
       <input type="submit">
     </form>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import axios from 'axios'
+import { ref,onMounted } from 'vue'
 import { useBoardStore } from '@/stores/board'
-import { useRoute, useRouter } from 'vue-router'
 
-const title = ref(null)
-const content = ref(null)
 const store = useBoardStore()
-const route = useRoute()
-const router = useRouter()
+const title = ref('')
+const content = ref('')
+const Category = ref('')
 
-console.log(route.query)
-
-const createBoard = function () {
-  axios({
-    method: 'post',
-    url: `${store.API_URL}/boards/${route.query.type}/`,
-    data: {
-      title: title.value,
-      content: content.value
-    },
-    // headers: {
-    //   Authorization: `Token ${store.token}`
-    // }
-  })
-    .then((res) => {
-      // console.log(res)
-      router.push({ name: 'ArticleView' })
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+const createBoard = () => {
+  const boardData = ref({title:title.value ,content:content.value})
+  if(Category.value == "product"){
+    store.createProductBoards(boardData.value)
+  }
+  else if(Category.value == "QnA"){
+    store.createQnABoards(boardData.value)
+  }
+  else {
+    alert('분류를 선택해 주세요')
+  }
 }
 
-
+onMounted(() => {
+  store.clearErrorMessages()
+})
 
 </script>
 
 <style>
-
+.error-message {
+    color: red;
+    font-size: 0.8em;
+    margin-top: 5px;
+}
 </style>

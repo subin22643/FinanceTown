@@ -64,6 +64,7 @@
             <input id="salary" type="number" v-model.trim="profileData.salary" class="form-control" readonly>
           </div>
 
+
           <!-- Financial Products Field -->
           <div class="form-group">
             <label for="financial_products">금융 상품</label>

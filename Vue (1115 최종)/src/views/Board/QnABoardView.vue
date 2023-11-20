@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>  금융 상품 리뷰 게시판 </h1>
-    <RouterLink :to="{ name: 'BoardCreate', query: { type: 'finance' } }">
+    <RouterLink :to="{ name: 'BoardCreate'}">
       [CREATE]
     </RouterLink>
     <BoardList />
@@ -17,7 +17,7 @@ import BoardList from '@/components/Board/BoardList.vue'
 const store = useBoardStore()
 
 onMounted(() => {
-  store.getFinanceBoards()
+  store.getProductBoards()
 })
 
 </script>

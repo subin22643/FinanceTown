@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import axios from 'axios'
 
 export const useUserStore = defineStore('user', () => {
-  
+
   const router = useRouter()
   const API_URL = 'http://127.0.0.1:8000'
   const token = ref(null)
@@ -29,7 +29,6 @@ export const useUserStore = defineStore('user', () => {
     // financial_products: ''
   })
   
-
   //에러메시지 초기화
   const clearErrorMessages = () => {
     for (const key in errorMessages.value) {
@@ -50,7 +49,6 @@ export const useUserStore = defineStore('user', () => {
       }
     }
   }
-
 
   // 로그인 여부
   const isLogin = computed(() => {

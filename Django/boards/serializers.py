@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from .models import FinanceReviews,ProductReviews,Comments
+from .models import ProductReviews,QuestionAnswers,Comments
 
-class FinanceReviewSerializer(serializers.ModelSerializer):
+class QnASerializer(serializers.ModelSerializer):
     class Meta:
-        model = FinanceReviews
+        model = QuestionAnswers
         fields = '__all__'
         read_only_fields = ['author','like_users']
 

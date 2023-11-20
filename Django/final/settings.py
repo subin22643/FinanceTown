@@ -3,6 +3,7 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -16,11 +17,14 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
+
 INSTALLED_APPS = [
     'accounts',
     'boards',
     'exchanges',
+    'moneys',
     'search',
+    'news',
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken', 
@@ -50,6 +54,7 @@ REST_FRAMEWORK = {
     ],
 }
 
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -60,12 +65,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
-
-
-CORS_ALLOWED_ORIGINS = [
-    'http://127.0.0.1:5173',
-    'http://localhost:5173',
 ]
 
 ROOT_URLCONF = 'final.urls'
@@ -141,12 +140,12 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 REST_AUTH = {
     'REGISTER_SERIALIZER': 'accounts.serializers.CustomRegisterSerializer',
     'TOKEN_SERIALIZER': 'accounts.serializers.CustomTokenSerializer',
     'OLD_PASSWORD_FIELD_ENABLED': True, #비밀번호 변경 시 기존 비밀번호인 old_password도 확인하겠다는 코드 
 }
+
 
 AUTH_USER_MODEL = 'accounts.User'
 ACCOUNT_ADAPTER = 'accounts.adapter.CustomAccountAdapter'
@@ -156,3 +155,8 @@ ACCOUNT_EMAIL_VERIFICATION = None
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+
+CORS_ALLOWED_ORIGINS = [
+    'http://127.0.0.1:5173',
+    'http://localhost:5173',
+]

@@ -16,15 +16,51 @@ BASE_URL = 'https://finlife.fss.or.kr/finlifeapi/'
 DEPOSIT_URL = BASE_URL + 'depositProductsSearch.json'
 SAVING_URL = BASE_URL + 'savingProductsSearch.json'
 params = {
-    'auth': 'c8753044e7de2142207743a6737640ce',
+    'auth': 'c80d28bbd5d6dbf81590668a229cdb66',
     'topFinGrpNo': '020000',
     'pageNo': '1',
     }
 
+
 @api_view(['get'])
 def deposit_index(request):
-    response = requests.get(DEPOSIT_URL, params=params).json()
-    return JsonResponse({ 'response': response })
+    products = DepositProducts.objects.all()
+    serializer = DepositProductsSerializer(products, many = True)
+    return Response({ 'response': serializer.data })
+
+    
+# 특정 상품의 옵션 조회하면 상품 데이터도 반환
+@api_view(['GET'])
+def deposit_products_options(request, fin_prdt_cd):
+    try:
+        product = DepositProducts.objects.get(fin_prdt_cd=fin_prdt_cd)
+    except DepositProducts.DoesNotExist:
+            return Response({"error": "Product not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    serializer = DepositProductsSerializer(product)
+    return Response(serializer.data)
+
+
+@api_view(['get'])
+def saving_index(request):
+    products = SavingProducts.objects.all()
+    serializer = SavingProductsSerializer(products, many = True)
+    return Response({ 'response': serializer.data })
+
+
+# 특정 상품 데이터랑 옵션 리스트 같이 반환 
+@api_view(['GET'])
+def saving_products_options(request, fin_prdt_cd):
+    try:
+        product = SavingProducts.objects.get(fin_prdt_cd=fin_prdt_cd)
+    except SavingProducts.DoesNotExist:
+            return Response({"error": "Product not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    serializer = SavingProductsSerializer(product)
+    return Response(serializer.data)
+
+
+
 
 
 # requests 모듈을 활용하여
@@ -38,36 +74,50 @@ def save_deposit_products(request):
 
     for product in products:
         serializer = DepositProductsSerializer(data=product)
-        #'save-deposit-products/'을 들어갈 떄마다 DB에 저장을 해야되는데 fin_prdt_cd가 unique로 되어 있어서 에러가 뜸
-        # unique 안되어 있으면 새로고침이나 url로 들어갈때마다 중복자료 계속 저장됨
-        # 해당 데이터를 처리하기 위해 try, except 사용 → 그냥 raise_exception =True를 안하면 try,except 없이 해도 되긴함
-        try:
-            if serializer.is_valid(raise_exception=True):
-                serializer.save()
-        except ValidationError:
-            continue
+        if serializer.is_valid():
+            if DepositProducts.objects.filter(fin_prdt_cd=product['fin_prdt_cd']).exists():
+                continue
+            product.save()
 
     for option in options:
-        try:
-            product = DepositProducts.objects.get(fin_prdt_cd=option['fin_prdt_cd'])
-            serializer = DepositOptionsSerializer(data=option)
-            if serializer.is_valid(raise_exception=True):
-                serializer.save(product=product)
-        except DepositProducts.DoesNotExist: #get에서 일치하는 정보가 없을 경우
-            continue        
-        except ValidationError:
-            continue
-    
+        if option['intr_rate'] is None:
+            option['intr_rate'] = -1
+        serializer = DepositOptionsSerializer(data=option)
+        if option.is_valid(raise_exception=True):
+            # cd 가져오기 -> ORM을 python으로 바꾸기
+            x = DepositProducts.objects.filter(fin_prdt_cd=option['fin_prdt_cd']).first()
+            # 이미 있는 데이터면 걸러주는 코드 추가
+            if DepositOptions.objects.filter(
+                    intr_rate = option['intr_rate'],
+                    intr_rate2 = option['intr_rate2'],
+                    save_trm = option['save_trm'],
+                    fin_prdt_cd_id = x.pk,
+                ).exists():
+                continue
+            option.save(fin_prdt_cd=x)
     return JsonResponse({ "message": "okay"})
 
 
-# 특정 상품의 옵션 리스트 반환
+
+# # 특정 상품의 옵션 조회하면 상품 데이터도 반환
+# @api_view(['GET'])
+# def deposit_products_options(request, fin_prdt_cd):
+#     product = DepositProducts.objects.get(fin_prdt_cd = fin_prdt_cd)
+#     option = product.deposit_options.all()
+#     serializer = DepositOptionsSerializer(option=option, many = True)
+#     return Response(serializer.data)
+
+
+# 특정 상품 데이터 조회하면 옵션도 같이 반환
 @api_view(['GET'])
-def deposit_products_options(request, fin_prdt_cd):
+def deposit_product(request, fin_prdt_cd):
     product = DepositProducts.objects.get(fin_prdt_cd = fin_prdt_cd)
     option = product.deposit_options.all()
     serializer = DepositOptionsSerializer(option, many = True)
     return Response(serializer.data)
+
+
+
 
 
 # 가입 기간에 상관없이
@@ -91,13 +141,6 @@ def top_rate_deposit(request):
     }
     
     return Response(data)
-
-
-
-@api_view(['get'])
-def saving_index(request):
-    response = requests.get(SAVING_URL, params=params).json()
-    return JsonResponse({ 'response': response })
 
 
 # requests 모듈을 활용하여
@@ -132,15 +175,6 @@ def save_saving_products(request):
             continue
     
     return JsonResponse({ "message": "okay"})
-
-
-# 특정 상품 데이터랑 옵션 리스트 같이 반환 
-@api_view(['GET'])
-def saving_products_options(request, fin_prdt_cd):
-    product = SavingProducts.objects.get(fin_prdt_cd = fin_prdt_cd)
-    option = product.saving_options.all()
-    serializer = SavingOptiontsSerializer(option, many = True)
-    return Response(serializer.data)
 
 
 # 가입 기간에 상관없이

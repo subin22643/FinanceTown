@@ -119,7 +119,7 @@ def QnA_like(request, QnA_pk):
 
 
 #@@@@@@@@@@@@@@@@@@@@@@댓글 구현@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-@api_view(['GET', 'POST'])
+@api_view(['GET','PUT', 'POST'])
 @permission_classes([IsAuthenticated])
 def product_comments(request, product_pk):
     product = get_object_or_404(ProductReviews,pk=product_pk)
@@ -128,14 +128,34 @@ def product_comments(request, product_pk):
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
 
+
+    elif request.method == 'PUT':
+        comment_id = request.GET.get('commentId')
+        comment = get_object_or_404(Comments, pk=comment_id)
+        serializer = CommentSerializer(comment, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(author=request.user, product=product)
+            return Response(serializer.data)
+        
+
     elif request.method == 'POST':
         serializer = CommentSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save(author=request.user, product=product)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+# 댓글 삭제
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def product_comments_delete(request, comment_pk):
+    if request.method == 'DELETE':
+        comment = get_object_or_404(Comments, pk=comment_pk)
+        comment.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@api_view(['GET', 'POST'])
+
+@api_view(['GET','PUT', 'POST','DELETE'])
 @permission_classes([IsAuthenticated])
 def QnA_comments(request, QnA_pk):
     QnA = get_object_or_404(QuestionAnswers,pk=QnA_pk)
@@ -143,12 +163,29 @@ def QnA_comments(request, QnA_pk):
         comments = QnA.QnA_comments.all()
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
+    
+    elif request.method == 'PUT':
+        comment_id = request.GET.get('commentId')
+        comment = get_object_or_404(Comments, pk=comment_id)
+        serializer = CommentSerializer(comment, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(author=request.user, QnA=QnA)
+            return Response(serializer.data)
 
     elif request.method == 'POST':
         serializer = CommentSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save(author=request.user, QnA=QnA)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+# 댓글 삭제
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def QnA_comments_delete(request, comment_pk):
+    if request.method == 'DELETE':
+        comment = get_object_or_404(Comments, pk=comment_pk)
+        comment.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['PUT', 'DELETE'])

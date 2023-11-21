@@ -6,20 +6,21 @@
       <label for="content">내용 : </label><input id="content" :readonly="isBoardReadonly" v-model="board.content" />
       <label for="created">작성일 : </label><input id="created" v-model="board.created_at" readonly>
       <label for="updated">수정일 : </label><input id="updated" v-model="board.updated_at" readonly>
-      <button v-if="isBoardReadonly" @click="toggleBoardReadonly">수정</button>
-      <button v-if="isBoardReadonly" @click="boardDelete">삭제</button>
-      <button v-if="!isBoardReadonly" @click="boardUpdate">저장</button>
+      <div v-if="board.author.username === useStore.loginUsername">
+        <button v-if="isBoardReadonly" @click="toggleBoardReadonly">수정</button>
+        <button v-if="isBoardReadonly" @click="boardDelete">삭제</button>
+        <button v-if="!isBoardReadonly" @click="boardUpdate">저장</button>
+      </div>
     </div>
 
     <div v-if="comments">
       <h2>댓글</h2>
       <div v-for="comment in comments" :key="comment.id">
-        <label for="content">{{ comment.author.username }}: </label><input id="content" :readonly="isCommentReadonly" v-model="comment.content" />
-        <div>aa: {{ useStore.loginUsername }}</div>
+        <label for="content">{{ comment.author.nickname }}: </label><input id="content" :readonly="comment.isCommentReadonly" v-model="comment.content" />
         <div v-if="comment.author.username === useStore.loginUsername">
-          <button v-if="isCommentReadonly" @click="toggleCommentReadonly">댓글 수정</button>
-          <button v-if="isCommentReadonly" @click="commentDelete">댓글 삭제</button>
-          <button v-if="!isCommentReadonly" @click="commentUpdate">댓글 저장</button>
+          <button v-if="comment.isCommentReadonly" @click="toggleCommentReadonly(comment)">댓글 수정</button>
+          <button v-if="comment.isCommentReadonly" @click="commentDelete(comment)">댓글 삭제</button>
+          <button v-if="!comment.isCommentReadonly" @click="commentUpdate(comment)">댓글 저장</button>
         </div>
       </div>
     </div>
@@ -42,7 +43,7 @@ const useStore = useUserStore()
 const route = useRoute()
 const board = ref()
 const isBoardReadonly = ref(true)
-const isCommentReadonly = ref(true)
+// const isCommentReadonly = ref(true)
 const comments = ref([])
 const newComment = ref('')
 
@@ -51,8 +52,8 @@ const isAuthenticated = computed(() => useStore.token)
 const toggleBoardReadonly = () => {
   isBoardReadonly.value = !isBoardReadonly.value;
 }
-const toggleCommentReadonly = () => {
-  isCommentReadonly.value = !isCommentReadonly.value;
+const toggleCommentReadonly = (comment) => {
+  comment.isCommentReadonly = !comment.isCommentReadonly;
 }
 
 //게시판 업데이트
@@ -106,7 +107,7 @@ const getComments = () => {
       }
     })
     .then((res) => {
-      comments.value = res.data;
+      comments.value = res.data.map(comment => ({ ...comment, isCommentReadonly: true }))
     })
     .catch((err) => {
       console.error(err)
@@ -135,12 +136,13 @@ const addComment = () => {
   }
   
 //댓글 수정
-const commentUpdate = () => {
-  const commentData = ref({content:comment.value.content})
+const commentUpdate = (comment) => {
+  const commentData = ref({content:comment.content})
   axios({
       method: 'put',
       url: `${store.API_URL}/boards/${route.query.type}/comments/${route.params.id}/`,
       data: commentData.value,
+      params: { commentId: comment.id},
       headers: {
           Authorization: `Token ${useStore.token}`
       }
@@ -148,12 +150,34 @@ const commentUpdate = () => {
     .then((res) => {
       // console.log(res.data)
       board.value = res.data
-      isCommentReadonly.value = true
+      comment.isCommentReadonly = true
+      alert("댓글이 수정되었습니다.")
+      getComments()
     })
     .catch((err) => {
       console.log(err)
     })
   }
+
+//댓글삭제
+const commentDelete = (comment) => {
+  console.log(comment)
+  axios({
+      method: 'delete',
+      url: `${store.API_URL}/boards/${route.query.type}/comments/delete/${comment.id}/`,
+      headers: {
+          Authorization: `Token ${useStore.token}`
+      }
+    })
+    .then((res) => {
+      alert('댓글이 삭제 되었습니다')
+      getComments()
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
+
 
 onMounted(() => {
   //게시판 1개 디테일 정보 요청

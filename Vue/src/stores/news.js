@@ -4,11 +4,12 @@ import axios from 'axios'
 
 export const useNewsStore = defineStore('news', () => {
   const news = ref([])
+  const tips = ref([])
   const URL = 'http://127.0.0.1:8000'
   const getNews = function() {
     axios({
       method: 'GET',
-      url: `${URL}/news`
+      url: `${URL}/news/`
     })
       .then(res => {
         console.log(res.data.items)
@@ -16,5 +17,18 @@ export const useNewsStore = defineStore('news', () => {
       })
       .catch(err => console.log(err))
   }
-  return { news, URL, getNews }
+
+  const getTips = function() {
+    axios({
+      method: 'GET',
+      url: `${URL}/news/tips/`
+    })
+      .then(res => {
+        console.log(res.data)
+        tips.value = res.data
+      })
+      .catch(err => console.log(err))
+  }
+  
+  return { news, URL, getNews, getTips }
 }, { persist: true })

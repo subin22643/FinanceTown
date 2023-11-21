@@ -22,7 +22,6 @@ INSTALLED_APPS = [
     'accounts',
     'boards',
     'exchanges',
-    'moneys',
     'search',
     'news',
     'corsheaders',

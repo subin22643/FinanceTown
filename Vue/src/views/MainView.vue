@@ -1,5 +1,6 @@
 <script setup>
 import NewsList from '@/components/News/NewsList.vue'
+import TipsList from '@/components/News/TipsList.vue'
 
 
 </script>
@@ -10,6 +11,7 @@ import NewsList from '@/components/News/NewsList.vue'
         <p>여기에는 대략적인 서비스 소개 넣는거 어떨까요</p>
     </div>
     <NewsList/>
+    <TipsList/>
 </template>
 
 <style scoped>

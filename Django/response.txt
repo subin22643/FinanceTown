@@ -1,0 +1,8 @@
+{123123
+    "reponse": {
+        "result": [],
+        "resultCnt": 0,
+        "resultCode": "033",
+        "resultMsg": "하루 조회 건수를 초과하였습니다. 하루 조회 건수는 30회 입니다."
+    }
+}123

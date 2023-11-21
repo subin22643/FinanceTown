@@ -6,6 +6,11 @@
       <label for="content">내용 : </label><input id="content" :readonly="isBoardReadonly" v-model="board.content" />
       <label for="created">작성일 : </label><input id="created" v-model="board.created_at" readonly>
       <label for="updated">수정일 : </label><input id="updated" v-model="board.updated_at" readonly>
+      
+      <div class="like-section">
+        <button v-if="!board.liked" @click="toggleLike(board)">👍 좋아요 {{ board.likeCount }}</button>
+        <button v-if="board.liked" @click="toggleLike(board)">👎 좋아요 취소 {{ board.likeCount }}</button>
+      </div>
       <div v-if="board.author.username === useStore.loginUsername">
         <button v-if="isBoardReadonly" @click="toggleBoardReadonly">수정</button>
         <button v-if="isBoardReadonly" @click="boardDelete">삭제</button>
@@ -43,10 +48,8 @@ const useStore = useUserStore()
 const route = useRoute()
 const board = ref()
 const isBoardReadonly = ref(true)
-// const isCommentReadonly = ref(true)
 const comments = ref([])
 const newComment = ref('')
-
 
 const isAuthenticated = computed(() => useStore.token)
 const toggleBoardReadonly = () => {
@@ -159,7 +162,7 @@ const commentUpdate = (comment) => {
     })
   }
 
-//댓글삭제
+//댓글 삭제
 const commentDelete = (comment) => {
   console.log(comment)
   axios({
@@ -178,6 +181,24 @@ const commentDelete = (comment) => {
     })
   }
 
+//좋아요 기능
+const toggleLike = (board) => {
+  axios({
+    method: 'post',
+    url: `${store.API_URL}/boards/${route.query.type}/${board.id}/like/`,
+    headers: {
+      Authorization: `Token ${useStore.token}`
+    }
+  })
+  .then((res) => {
+    console.log(res.data)
+    board.liked = res.data.liked
+    board.likeCount = res.data.likeCount
+  })
+  .catch((err) => {
+    console.error(err)
+  })
+}
 
 onMounted(() => {
   //게시판 1개 디테일 정보 요청
@@ -189,7 +210,7 @@ onMounted(() => {
       }
     })
     .then((res) => {
-      // console.log(res.data)
+      console.log(res.data)
       board.value = res.data
     })
     .catch((err) => {

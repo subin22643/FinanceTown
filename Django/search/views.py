@@ -60,9 +60,6 @@ def saving_products_options(request, fin_prdt_cd):
     return Response(serializer.data)
 
 
-
-
-
 # requests 모듈을 활용하여
 # 정기예금 상품 목록 데이터를 가져와
 # 정기예금 상품 목록, 옵션 목록을 DB에 저장

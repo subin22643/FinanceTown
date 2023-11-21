@@ -4,6 +4,8 @@ from accounts.serializers import CustomDetailSerializer
 
 class QnASerializer(serializers.ModelSerializer):
     author = CustomDetailSerializer(read_only=True)
+    liked = serializers.SerializerMethodField() #boardDetail 응답에 좋아요 상태를 반환하기 위함
+    likeCount = serializers.SerializerMethodField() #boardDetail 응답에 좋아요 수를 반환하기 위함
     created_at = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S',read_only=True)
     updated_at = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S',read_only=True)
 
@@ -12,14 +14,39 @@ class QnASerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ['author','like_users']
 
+    #hassattr : 객체에 특성 속성이 있으면 True, 없으면 False를 반환하게 해줌. ProductReviewSerializer를 views.py의 prodcuct함수에서도 쓰면서 에러 방지로 사용함.
+    def get_liked(self, obj):
+        request = self.context.get('request')
+        if request and hasattr(request, 'user'):
+            return request.user in obj.like_users.all()
+        return False
+
+    # like_users 필드의 사용자 수를 반환
+    def get_likeCount(self, obj):
+        return obj.like_users.count()
+
 class ProductReviewSerializer(serializers.ModelSerializer):
     author = CustomDetailSerializer(read_only=True)
-    created_at = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S',read_only=True)
-    updated_at = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S',read_only=True)
+    liked = serializers.SerializerMethodField() #boardDetail 응답에 좋아요 상태를 반환하기 위함
+    likeCount = serializers.SerializerMethodField() #boardDetail 응답에 좋아요 수를 반환하기 위함
+    created_at = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
+    updated_at = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
+
     class Meta:
         model = ProductReviews
         fields = '__all__'
-        read_only_fields = ['author','like_users']
+        read_only_fields = ['author', 'like_users']
+
+    #hassattr : 객체에 특성 속성이 있으면 True, 없으면 False를 반환하게 해줌. ProductReviewSerializer를 views.py의 prodcuct함수에서도 쓰면서 에러 방지로 사용함.
+    def get_liked(self, obj):
+        request = self.context.get('request')
+        if request and hasattr(request, 'user'):
+            return request.user in obj.like_users.all()
+        return False
+
+    # like_users 필드의 사용자 수를 반환
+    def get_likeCount(self, obj):
+        return obj.like_users.count()
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -31,12 +58,3 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comments
         fields = '__all__'
         read_only_fields = ['author']
-
-    # def to_representation(self, instance):
-    #     representation = super().to_representation(instance)
-    #     # 외래키 필드가 비어있는 경우, 해당 필드를 Response에서 제외하는 로직
-    #     if not instance.finance_review:
-    #         representation.pop('finance_review', None)
-    #     if not instance.product_review:
-    #         representation.pop('product_review', None)
-    #     return representation

@@ -92,7 +92,6 @@ export const useBoardStore = defineStore('board', () => {
       })
     }
 
-
   //에러메시지 처리하는 로직
   const errorMessages = ref({
     title: '',

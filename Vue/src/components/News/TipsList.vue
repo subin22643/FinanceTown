@@ -4,9 +4,11 @@ import { useNewsStore } from '@/stores/news'
 
 const store = useNewsStore()
 
-onMounted(() => {
+//조회 되면 onmounted로 바꾸기
+const test = () =>{
     store.getTips()
-})
+}
+
 
 const tipsList = store.tips  
 
@@ -14,11 +16,9 @@ const tipsList = store.tips
 
 <template>
     <div>
+        <button @click="test">조회 test</button>
         <h3>오늘의 금융 꿀팁</h3>
         <p>{{ tipsList }} </p>
-            <!-- <p v-for="tip in tipsList">
-
-            </p> -->
     </div>
 </template>
 

@@ -5,4 +5,5 @@ app_name = "quiz"
 
 urlpatterns = [
    path('', views.quiz, name="quiz"),
+   path('already/', views.alreadyQuiz, name="alreadyQuiz"),
 ]

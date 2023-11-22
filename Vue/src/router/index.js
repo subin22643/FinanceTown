@@ -29,7 +29,7 @@ import UserUpdateView from '@/views/User/UserUpdateView.vue'
 import ProfileView from '@/views/User/ProfileView.vue'
 import DeleteView from '@/views/User/DeleteView.vue'
 import PasswordChangeView from '@/views/User/PasswordChangeView.vue'
-
+import CartView from '@/views/User/CartView.vue'
 
 
 const router = createRouter({
@@ -137,6 +137,11 @@ const router = createRouter({
       path: '/user/update',
       name: 'UserUpdate',
       component: UserUpdateView,
+    },
+    {
+      path: '/user/cart',
+      name: 'Cart',
+      component: CartView,
     },
   ]
 })

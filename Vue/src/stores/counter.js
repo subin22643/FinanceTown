@@ -11,7 +11,7 @@ export const useFinanceStore = defineStore('finance', () => {
       url: `${API_URL}/search`
     })
       .then(res => {
-        console.log(res.data.response) 
+        // console.log(res.data.response) 
         deposits.value = res.data.response
       })
       .catch(err => {

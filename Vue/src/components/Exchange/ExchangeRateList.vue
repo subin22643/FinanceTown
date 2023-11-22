@@ -77,7 +77,10 @@ const exchangeMoney = () => {
         }
     }}
 
-
+const cur_nm = store.exchanges.reduce((acc, ex) => {
+    acc.push(ex.cur_nm)
+    return acc
+}, [])
 
 watch([inputSend, inputReceive, selectedOption], () => {
     exchangeMoney()
@@ -89,21 +92,46 @@ watch([inputSend, inputReceive, selectedOption], () => {
     <div>
         <strong>이건 내가 검색할거</strong>
         <form>
-            <div class="dropbox">
-                <select v-model="selectedOption">
-                <option v-for="exch in store.exchanges" :key="exch.id">
-                    {{ exch.cur_nm }}
-                </option>
-                </select>
-            </div>
-            <div class="input1">
-                <label for="send">송금 보낼때 </label>
-                <input type="number" id="send" v-model="inputSend">
-            </div>
-            <div class="input2">
-                <label for="receive">송금 받을때 </label>
-                <input type="number" id="receive" v-model=inputReceive>
-            </div>
+            <v-select v-model="selectedOption"
+                label="통화"
+                :items="cur_nm"
+                variant="outlined"
+                ></v-select>
+            <v-form v-model="valid">
+                <v-container>
+                <v-row>
+                    <v-col
+                    cols="12"
+                    md="4"
+                    >
+                    <v-text-field
+                        type="number"
+                        v-model="inputSend"
+                        :rules="Number"
+                        :counter="10"
+                        label="송금 보낼 때"
+                        required
+                        hide-details
+                    ></v-text-field>
+                    </v-col>
+
+                    <v-col
+                    cols="12"
+                    md="4"
+                    >
+                    <v-text-field
+                        type="number"
+                        v-model="inputReceive"
+                        :rules="Number"
+                        :counter="10"
+                        label="송금 받을 때"
+                        hide-details
+                        required
+                    ></v-text-field>
+                    </v-col>
+                </v-row>
+                </v-container>
+            </v-form>
         </form>
         <p>* 엔화, 인도네시아 루피아는 100 단위, 나머지 모두 1단위</p>
         <hr>
@@ -125,8 +153,7 @@ watch([inputSend, inputReceive, selectedOption], () => {
         <hr>
         <strong>오늘의 환율</strong>
         <ExchangeRateListItem
-            v-for="exchange in store.exchanges" 
-            :exchange="exchange" 
+            :exchange="store.exchanges" 
             />
     </div>
 

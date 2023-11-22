@@ -21,6 +21,15 @@ params = {
     'pageNo': '1',
     }
 
+# BASE_URL = 'https://www.fss.or.kr/fss/kr/openApi/api/tip.jsp?'
+# params = {
+#     'apiType' : 'json',
+#     'startDate': '',
+#     'endDate': '',
+#     'authKey': '1',
+#     }
+
+
 
 @api_view(['get'])
 def deposit_index(request):

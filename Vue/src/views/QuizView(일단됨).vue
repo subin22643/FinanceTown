@@ -1,7 +1,7 @@
 <template>
   <hr>
   <h1>금융퀴즈 공간</h1>
-  <div v-if="!quizCompleted" class="quiz-container">
+  <div class="quiz-container">
     <div v-for="(question, index) in quizData" :key="index" v-show="currentSlide === index">
       <div class="question">{{ question.question }}</div>
       <div class="answers">
@@ -13,10 +13,7 @@
     <button v-if="currentSlide > 0" @click="showPreviousSlide">back</button>
     <button v-if="currentSlide < quizData.length - 1" @click="showNextSlide">next</button>
     <button v-if="currentSlide === quizData.length - 1" @click="showResults">결과확인</button>
-  </div>
-  <div v-if="resultShown">{{ resultText }}</div>
-  <div v-if="quizCompleted" class="completion-message">
-    오늘 제공된 퀴즈를 완료하셨습니다.
+    <div v-if="resultShown">{{ resultText }}</div>
   </div>
   <hr>
 </template>
@@ -57,7 +54,6 @@ const quizData = ref([
 const currentSlide = ref(0);
 const resultShown = ref(false);
 const resultText = ref('');
-const quizCompleted = ref(false);
 
 const showPreviousSlide = () => {
   if (currentSlide.value > 0) {
@@ -73,17 +69,18 @@ const showNextSlide = () => {
 
 const showResults = () => {
   let numCorrect = 0;
+  const answerContainers = document.querySelectorAll('.answers');
   quizData.value.forEach((question, index) => {
+    const answerContainer = answerContainers[index];
     const selector = `input[name=question${index}]:checked`;
-    const userAnswer = document.querySelector(selector)?.value;
+    const userAnswer = (answerContainer.querySelector(selector) || {}).value;
+
     if (userAnswer === question.correct) {
       numCorrect++;
     }
   });
-  resultText.value = `${quizData.value.length}문제 중 ${numCorrect}개 정답입니다.`;
+  resultText.value = `${quizData.value.length}문제 중 ${numCorrect}개 정답입니다.`
   resultShown.value = true;
-  quizCompleted.value = true; // 퀴즈 완료 상태를 true로 설정합니다.
-  alert(resultText.value); // 결과를 alert으로 표시합니다.
 };
 </script>
 
@@ -162,10 +159,4 @@ button:disabled {
   font-size: 1.25rem; /* 글자 크기 */
   font-weight: bold; /* 글자 두께 */
 }
-
-.completion-message {
-    text-align: center;
-    font-size: 1.25rem;
-    margin-top: 1rem;
-  }
 </style>

@@ -1,24 +1,22 @@
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted,ref } from 'vue'
 import { useNewsStore } from '@/stores/news'
 
 const store = useNewsStore()
 
-//조회 되면 onmounted로 바꾸기
-const test = () =>{
+onMounted( () => {
     store.getTips()
-}
-
-
-const tipsList = store.tips  
+})
 
 </script>
 
 <template>
     <div>
-        <button @click="test">조회 test</button>
         <h3>오늘의 금융 꿀팁</h3>
-        <p>{{ tipsList }} </p>
+        <p v-for="tip in store.tips.data">
+            <a :href="tip.originUrl.replace('www.', 'fine.')">{{ tip.subject }}</a>
+            <hr>
+        </p>
     </div>
 </template>
 

@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
 
@@ -30,5 +30,5 @@ export const useNewsStore = defineStore('news', () => {
       .catch(err => console.log(err))
   }
   
-  return { news, URL, getNews, getTips }
+  return { news, URL, tips, getNews, getTips }
 }, { persist: true })

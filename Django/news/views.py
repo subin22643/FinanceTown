@@ -1,20 +1,19 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.http import JsonResponse
-from datetime import datetime
+from django.conf import settings
+from datetime import datetime, timedelta
 from .serializers import TipsSerializer
 from .models import Tips
 import requests
 import urllib.request
 import json
-from pprint import pprint
 
 
 @api_view(['GET'])
 def news(request):
-    client_id = 'HaZqKzchSa8gsJTIi_El'
-    client_secret = 'WNqLvGJH0w'
+    client_id = settings.NEWS_ID
+    client_secret = settings.NEWS_SECRET
     encText = urllib.parse.quote('금융')
     URL = 'https://openapi.naver.com/v1/search/news.json?query=' + encText
     request = urllib.request.Request(URL)
@@ -35,36 +34,39 @@ def news(request):
     else:
         return Response({"message": "조회에 실패했습니다."}, status=status.HTTP_404_NOT_FOUND)
 
+
 @api_view(['GET'])
 def tips(request):
     if Tips.objects.exists():  # DB에 데이터가 이미 있는 경우
-      data = Tips.objects.all() 
-      return Response({"data": "data"})
+      datas = Tips.objects.all() 
+      serializer = TipsSerializer(datas, many=True)
+      return Response({ 'data': serializer.data })
     
     else:
-      start_date = datetime(2016, 8, 1)
-      end_date = datetime.now()
-      params = {
-          'apiType': 'json',
-          'startDate': start_date.strftime('%Y-%m-%d'),
-          'endDate': end_date.strftime('%Y-%m-%d'),
-          'authKey': '489e82582bcb3284d078bbae3e72ca87'
-      }
-      response = requests.get('https://www.fss.or.kr/fss/kr/openApi/api/tip.jsp', params=params).json()
+        # # 조회기간이 1개월 단위이고, API 횟수가 30번이라 dB저장시 start,end_date 바꿔가면서 노가다하기
+        end_date = datetime.now()
+        start_date = end_date.replace(day=1)
+        while start_date > datetime(2016, 6, 1):
 
-      # response 데이터 까보고 key, value 잘 찾아서 실험하기, api 요청 하루 30번 가능함
-      results = response.get('reponse', {}).get('result', [])
+            params = {
+                'apiType': 'json',
+                'startDate': start_date.strftime('%Y-%m-%d'),
+                'endDate': end_date.strftime('%Y-%m-%d'),
+                'authKey': settings.TIPS_API_KEY
+            }
 
-      response_str = json.dumps(response, ensure_ascii=False, indent=4)
-      with open('response.txt','w',encoding='utf-8') as file:
-          file.write(response_str)
+            response = requests.get('https://www.fss.or.kr/fss/kr/openApi/api/tip.jsp', params=params).json()
+            results = response['reponse']['result']
 
-      for result in results:
-          # 각 결과를 모델 인스턴스로 변환하고 저장
-          serializer = TipsSerializer(data=result)
-          if serializer.is_valid():
-              serializer.save()
-          else:
-              print(f"Validation failed for data: {result}")
+            # 결과 처리 및 데이터베이스 저장
+            for result in results:
+                serializer = TipsSerializer(data=result)
+                print(result)
+                if serializer.is_valid():
+                    serializer.save()
 
-    return Response({"status": "completed"})
+            # 다음 달로 날짜 업데이트
+            end_date = start_date - timedelta(days=1)
+            start_date = end_date.replace(day=1)
+
+        return Response({"status": "completed"})

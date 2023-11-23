@@ -57,6 +57,7 @@
 <script setup>
   import { RouterLink, RouterView } from 'vue-router'
   import { useUserStore } from '@/stores/user';
+  import { useRouter } from 'vue-router';
   import logoImage from '@/assets/로고 그림만.png'
   import logoText from '@/assets/로고 글자집.png'
   import bottom from '@/assets/바닥2.png'

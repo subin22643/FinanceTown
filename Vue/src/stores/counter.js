@@ -11,11 +11,7 @@ export const useFinanceStore = defineStore('finance', () => {
       url: `${API_URL}/search`
     })
       .then(res => {
-<<<<<<< HEAD
-        // console.log(res.data.response) 
-=======
         console.log(res.data.response) 
->>>>>>> jonggil
         deposits.value = res.data.response
       })
       .catch(err => {

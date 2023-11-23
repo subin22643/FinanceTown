@@ -1,11 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useFinanceStore } from '@/stores/counter'
-<<<<<<< HEAD
 import SearchListItem from '@/components/Search/SearchListItem.vue';
-=======
-import SearchListItem from './SearchListItem.vue';
->>>>>>> jonggil
 
 
 const store = useFinanceStore()
@@ -67,7 +63,6 @@ const searchDeposit = () => {
         <br>
         <strong>검색 조건을 입력하세요</strong>
         <br>
-<<<<<<< HEAD
         <v-select v-model="selectedBank"
             label="은행"
             :items="['한국스탠다드차타드은행', '부산은행', '대구은행', '광주은행', '제주은행', '전북은행', '경남은행', '중소기업은행', '한국산업은행', '국민은행', '신한은행', '농협은행주식회사', '하나은행', '주식회사 케이뱅크', '수협은행', '주식회사 카카오뱅크', '토스뱅크 주식회사']"
@@ -81,25 +76,6 @@ const searchDeposit = () => {
         <v-btn variant="outlined" @click="searchDeposit">
             조회
             </v-btn>  
-=======
-        <p>은행을 선택하세요</p>
-        <div class="dropbox">
-            <select v-model="selectedBank">
-            <option v-for="sbank in ['한국스탠다드차타드은행', '부산은행', '대구은행', '광주은행', '제주은행', '전북은행', '경남은행', '중소기업은행', '한국산업은행', '국민은행', '신한은행', '농협은행주식회사', '하나은행', '주식회사 케이뱅크', '수협은행', '주식회사 카카오뱅크', '토스뱅크 주식회사']" :key="sbank.id">
-                {{ sbank }}
-            </option>
-            </select>
-        </div>
-        <p>예치 기간</p>
-        <div class="dropbox">
-            <select v-model="selectedMonth">
-            <option v-for="mon in ['6', '12', '24', '36']" :key="mon.id">
-                {{ mon }}개월
-            </option>
-            </select>
-        </div>
-        <button @click="searchDeposit">조회</button>
->>>>>>> jonggil
         <br>
         <hr>
         <hr>

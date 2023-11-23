@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-import { ref, computed } from 'vue'
-import { defineStore } from 'pinia'
-import { useUserStore } from './user'
-import { useRouter } from 'vue-router';
-import axios from 'axios'
-
-export const useBoardStore = defineStore('counter', () => {
-=======
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useUserStore } from '@/stores/user'
@@ -14,21 +5,14 @@ import { useRouter } from 'vue-router';
 import axios from 'axios'
 
 export const useBoardStore = defineStore('board', () => {
->>>>>>> jonggil
   const productBoards = ref([])
   const QnABoards = ref([])
   const API_URL = 'http://127.0.0.1:8000'
   const useStore = useUserStore()
   const router = useRouter()
 
-<<<<<<< HEAD
-  const getProductBoards = function () {
-    
-    //금융 상품 리뷰 게시판 조회 요청
-=======
   //금융 상품 리뷰 게시판 조회 요청
   const getProductBoards = function () {
->>>>>>> jonggil
     axios({
       method: 'get',
       url : `${API_URL}/boards/product/`,
@@ -43,29 +27,6 @@ export const useBoardStore = defineStore('board', () => {
         console.log(err)
       })
     }
-<<<<<<< HEAD
-    
-    const getQnABoards = function () {
-      //QnA 게시판 요청 조회 요청
-      axios({
-        method: 'get',
-        url : `${API_URL}/boards/QnA/`,
-        headers: {
-          Authorization: `Token ${useStore.token}`
-        }
-      })
-        .then((res) =>{
-          QnABoards.value = res.data
-        })
-        .catch((err) => {
-          console.log(err)
-          setErrorMessages(err)
-        })
-      }
-    
-  const createProductBoards = function (boardData) {
-    //상품 리뷰 게시판 생성
-=======
 
 
   //QnA 게시판 요청 조회 요청
@@ -89,7 +50,6 @@ export const useBoardStore = defineStore('board', () => {
 
   //상품 리뷰 게시판 생성
   const createProductBoards = function (boardData) {
->>>>>>> jonggil
     axios({
       method: 'post',
       url : `${API_URL}/boards/product/`,
@@ -101,11 +61,7 @@ export const useBoardStore = defineStore('board', () => {
     .then((res) =>{
       console.log(res.data)
       alert("게시판이 등록 되었습니다.")
-<<<<<<< HEAD
-      router.push({ name: 'BoardView' })
-=======
       router.push({ name: 'ProductBoardView' })
->>>>>>> jonggil
     })
     .catch((err) => {
       console.log(err)
@@ -113,14 +69,9 @@ export const useBoardStore = defineStore('board', () => {
     })
   }
   
-<<<<<<< HEAD
-  const createQnABoards = function (boardData) {
-      //QnA게시판 생성
-=======
 
   //QnA게시판 생성
   const createQnABoards = function (boardData) {
->>>>>>> jonggil
       console.log(boardData)
       axios({
         method: 'post',
@@ -133,21 +84,13 @@ export const useBoardStore = defineStore('board', () => {
       .then((res) =>{
         console.log(res.data)
         alert("게시판이 등록 되었습니다.")
-<<<<<<< HEAD
-        router.push({ name: 'BoardView' })
-=======
         router.push({ name: 'QnABoardView' })
->>>>>>> jonggil
       })
       .catch((err) => {
         console.log(err)
         setErrorMessages(err)
       })
     }
-<<<<<<< HEAD
-  
-=======
->>>>>>> jonggil
 
   //에러메시지 처리하는 로직
   const errorMessages = ref({
@@ -170,10 +113,6 @@ export const useBoardStore = defineStore('board', () => {
     }
   }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> jonggil
   //에러메시지 초기화
   const clearErrorMessages = () => {
     for (const key in errorMessages.value) {
@@ -181,10 +120,6 @@ export const useBoardStore = defineStore('board', () => {
     }
   };
 
-<<<<<<< HEAD
-=======
-
->>>>>>> jonggil
   return { 
       API_URL,  
       productBoards, 

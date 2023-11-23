@@ -7,5 +7,6 @@ urlpatterns = [
     path('boards/', include('boards.urls')),
     path('exchanges/', include('exchanges.urls')),
     path('search/', include('search.urls')),
-    path('news/', include('news.urls'))
+    path('news/', include('news.urls')),
+    path('quiz/', include('quizzes.urls')),
 ]

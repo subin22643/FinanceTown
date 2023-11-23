@@ -1,8 +1,26 @@
 from pathlib import Path
+import environ
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+#내 PC 파일안에 저장된(.env파일) API_KEY 변수를 가져옴
+#코드는 공식문서에 있는거 복사해서 썼음
+
+
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, True)
+)
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
+EXCHANGES_API_KEY=env('exchanges_API_KEY')
+TEST_KEY=env('TEST_KEY')
+NEWS_ID=env('news_id')
+NEWS_SECRET=env('news_secret')
+TIPS_API_KEY=env('tips_API_KEY')
+SEARCH_API_KEY=env('search_API_KEY')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -16,15 +34,16 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+
 # Application definition
 
 INSTALLED_APPS = [
     'accounts',
     'boards',
     'exchanges',
-    'moneys',
     'search',
     'news',
+    'quizzes',
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken', 
@@ -159,4 +178,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:5173',
     'http://localhost:5173',
+<<<<<<< HEAD
 ]
+=======
+]
+>>>>>>> jonggil

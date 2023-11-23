@@ -8,7 +8,12 @@ export const useUserStore = defineStore('user', () => {
   const router = useRouter()
   const API_URL = 'http://127.0.0.1:8000'
   const token = ref(null)
+<<<<<<< HEAD
   const pageNickname = ref('')
+=======
+  const loginUserNickname = ref('')
+  const loginUsername = ref('')
+>>>>>>> jonggil
 
   //에러메시지 출력
   const errorMessages = ref({
@@ -99,6 +104,7 @@ const logIn = function (payload) {
       username, password
     }
   })
+<<<<<<< HEAD
       .then((res) => {
         pageNickname.value = res.data.nickname
         token.value = res.data.key
@@ -109,6 +115,19 @@ const logIn = function (payload) {
       .catch((err) => {
         setErrorMessages(err)
       })
+=======
+  .then((res) => {
+    loginUserNickname.value = res.data.nickname
+    loginUsername.value = res.data.username
+    token.value = res.data.key
+    setProfileData() // 로그인 할 때 프로필 정보 받아오기
+    router.push({ name: 'main' })
+    // console.log(profileData.value)
+  })
+  .catch((err) => {
+    setErrorMessages(err)
+  })
+>>>>>>> jonggil
   }
 
 
@@ -227,6 +246,10 @@ const changePassword = () => {
       })
   }
 
+<<<<<<< HEAD
   return { API_URL, token, isLogin, pageNickname, profileData, errorMessages, passwordChangeData,
+=======
+  return { API_URL, token, isLogin, loginUserNickname, loginUsername, profileData, errorMessages, passwordChangeData,
+>>>>>>> jonggil
     signUp, logIn, logOut, setProfileData, update, changePassword, userDelete, clearErrorMessages }
 }, { persist: true })

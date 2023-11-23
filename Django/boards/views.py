@@ -6,18 +6,6 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 
-# Create your views here.
-# 회원간 소통 할 수 있는 커뮤니티 기능(게시판)을 구현합니다.
-# • 게시글 조회, 생성, 삭제, 수정 및 댓글 생성, 삭제 기능은 필수로 구현합니다.
-# • 회원의 권한에 따라 다른 동작을 하도록 구성합니다.
-# • 예시: 본인이 작성한 게시글 및 댓글만 삭제, 수정 가능하도록 구성합니다.
-# • 소통 방식은 자유롭게 구성합니다.
-# • 예시: 금융 상품 리뷰 게시판, 내가 가입한 상품 자랑 게시판 등
-# 각 게시판 종류별 전체 조회/생성 + 단일 게시판 조회/수정/삭제 구현
-
-
-#@@@@@@@@@@@@@@@@@@@@@@@게시판 종류별 전체 조회/생성 + 단일 게시판 상세 조회/수정/삭제 구현 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def product(request):
@@ -37,9 +25,9 @@ def product(request):
 @permission_classes([IsAuthenticated])
 def product_detail(request, product_pk):
     productBoard = get_object_or_404(ProductReviews, pk=product_pk)
-
     if request.method == 'GET':
-        serializer = ProductReviewSerializer(productBoard)
+        # request를 serializer context에 추가
+        serializer = ProductReviewSerializer(productBoard, context={'request': request})
         return Response(serializer.data)
     
     elif request.method == 'PUT':
@@ -73,9 +61,8 @@ def QnA(request):
 @permission_classes([IsAuthenticated])
 def QnA_detail(request, QnA_pk):
     QnABoard = get_object_or_404(QuestionAnswers, pk=QnA_pk)
-
     if request.method == 'GET':
-        serializer = QnASerializer(QnABoard)
+        serializer = QnASerializer(QnABoard, context={'request': request})
         return Response(serializer.data)
     
     elif request.method == 'PUT':
@@ -94,32 +81,40 @@ def QnA_detail(request, QnA_pk):
 @permission_classes([IsAuthenticated])
 def product_like(request, product_pk):
     productBoard = get_object_or_404(ProductReviews, pk=product_pk)
+    liked = False  # 좋아요 상태
+    if request.method == 'POST':
+        if request.user in productBoard.like_users.all():
+            productBoard.like_users.remove(request.user)
+            liked = False
+        else:
+            productBoard.like_users.add(request.user)
+            liked = True
 
-    if request.user in productBoard.like_users.all():
-        productBoard.like_users.remove(request.user)
-    else:
-        productBoard.like_users.add(request.user)
-
-    productBoard.save()
-    return Response({'status': 'ok'})
+        productBoard.save()
+        like_count = productBoard.like_users.count()  # 좋아요 카운트
+        return Response({'liked': liked, 'likeCount': like_count, 'status': 'ok'})
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def QnA_like(request, QnA_pk):
     QnABoard = get_object_or_404(QuestionAnswers, pk=QnA_pk)
+    liked = False  # 좋아요 상태
+    if request.method == 'POST':
+      if request.user in QnABoard.like_users.all():
+          QnABoard.like_users.remove(request.user)
+          liked = False
+      else:
+          QnABoard.like_users.add(request.user)
+          liked = True
+      QnABoard.save()
+      like_count = QnABoard.like_users.count()  # 좋아요 카운트
+      return Response({'liked': liked, 'likeCount': like_count, 'status': 'ok'})
 
-    if request.user in QnABoard.like_users.all():
-        QnABoard.like_users.remove(request.user)
-    else:
-        QnABoard.like_users.add(request.user)
-
-    QnABoard.save()
-    return Response({'status': 'ok'})
 
 
 #@@@@@@@@@@@@@@@@@@@@@@댓글 구현@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-@api_view(['GET', 'POST'])
+@api_view(['GET','PUT', 'POST'])
 @permission_classes([IsAuthenticated])
 def product_comments(request, product_pk):
     product = get_object_or_404(ProductReviews,pk=product_pk)
@@ -128,11 +123,64 @@ def product_comments(request, product_pk):
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
 
+
+    elif request.method == 'PUT':
+        comment_id = request.GET.get('commentId')
+        comment = get_object_or_404(Comments, pk=comment_id)
+        serializer = CommentSerializer(comment, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(author=request.user, product=product)
+            return Response(serializer.data)
+        
+
     elif request.method == 'POST':
         serializer = CommentSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save(author=request.user, product=product)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+# 댓글 삭제
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def product_comments_delete(request, comment_pk):
+    if request.method == 'DELETE':
+        comment = get_object_or_404(Comments, pk=comment_pk)
+        comment.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
+@api_view(['GET','PUT', 'POST','DELETE'])
+@permission_classes([IsAuthenticated])
+def QnA_comments(request, QnA_pk):
+    QnA = get_object_or_404(QuestionAnswers,pk=QnA_pk)
+    if request.method == 'GET':
+        comments = QnA.QnA_comments.all()
+        serializer = CommentSerializer(comments, many=True)
+        return Response(serializer.data)
+    
+    elif request.method == 'PUT':
+        comment_id = request.GET.get('commentId')
+        comment = get_object_or_404(Comments, pk=comment_id)
+        serializer = CommentSerializer(comment, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(author=request.user, QnA=QnA)
+            return Response(serializer.data)
+
+    elif request.method == 'POST':
+        serializer = CommentSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(author=request.user, QnA=QnA)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+# 댓글 삭제
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def QnA_comments_delete(request, comment_pk):
+    if request.method == 'DELETE':
+        comment = get_object_or_404(Comments, pk=comment_pk)
+        comment.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['GET', 'POST'])

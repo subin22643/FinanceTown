@@ -42,7 +42,8 @@
         </div>
       </div>
     </nav>
-    <div>
+    <div class="router-view-container">
+      <button class="nav-item nav-link back" @click="goBack"> ← 뒤로 가기</button>
       <RouterView/>
     </div>
   </div>
@@ -62,8 +63,13 @@
   import sky from '@/assets/하늘5.png'
   
   const store = useUserStore()
+  const router = useRouter()
   const logOut = function () {
     store.logOut()
+  }
+
+  const goBack = function () {
+    router.back()
   }
 </script>
 
@@ -106,6 +112,16 @@
   font-size: 20px;
   margin-right: 10px;
 }
+
+.back {
+    margin-left: 10px; /* 버튼 간격 조정 */
+    color: blueviolet;
+    font-weight: bolder;
+    border: 2px solid gray;
+    padding: 5px;
+    margin-bottom: 20px;
+  }
+  
 
 .router-view-container {
   padding: 20px;

@@ -1,18 +1,20 @@
 <template>
   <div>
-    <h1> 상품 자랑 게시판 </h1>
-    <RouterLink :to="{ name: 'BoardCreate', query: { type: 'product' } }">
-      [CREATE]
+    <h1> 금융 상품 리뷰 게시판 </h1>
+    <RouterLink :to="{ name: 'BoardCreate' }">
+      [게시글 작성]
+      <hr>
     </RouterLink>
-    <BoardList />
+    <productBoardList />
   </div>
 </template>
 
 <script setup>
+
 import { onMounted } from 'vue'
 import { useBoardStore } from '@/stores/board'
 import { RouterLink } from 'vue-router'
-import BoardList from '@/components/Board/BoardList.vue'
+import productBoardList from '@/components/Board/productBoardList.vue'
 
 const store = useBoardStore()
 

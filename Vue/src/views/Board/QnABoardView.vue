@@ -1,8 +1,9 @@
 <template>
   <div>
-    <h1>  금융 상품 리뷰 게시판 </h1>
+    <h1> 상담 게시판 </h1>
     <RouterLink :to="{ name: 'BoardCreate'}">
-      [CREATE]
+      [게시글 작성]
+      <hr>
     </RouterLink>
     <BoardList />
   </div>
@@ -12,12 +13,12 @@
 import { onMounted } from 'vue'
 import { useBoardStore } from '@/stores/board'
 import { RouterLink } from 'vue-router'
-import BoardList from '@/components/Board/BoardList.vue'
+import BoardList from '@/components/Board/QnABoardList.vue'
 
 const store = useBoardStore()
 
 onMounted(() => {
-  store.getProductBoards()
+  store.getQnABoards()
 })
 
 </script>

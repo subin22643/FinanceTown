@@ -77,10 +77,14 @@ const exchangeMoney = () => {
         }
     }}
 
+<<<<<<< HEAD
 const cur_nm = store.exchanges.reduce((acc, ex) => {
     acc.push(ex.cur_nm)
     return acc
 }, [])
+=======
+
+>>>>>>> jonggil
 
 watch([inputSend, inputReceive, selectedOption], () => {
     exchangeMoney()
@@ -92,6 +96,7 @@ watch([inputSend, inputReceive, selectedOption], () => {
     <div>
         <strong>이건 내가 검색할거</strong>
         <form>
+<<<<<<< HEAD
             <v-select v-model="selectedOption"
                 label="통화"
                 :items="cur_nm"
@@ -132,6 +137,23 @@ watch([inputSend, inputReceive, selectedOption], () => {
                 </v-row>
                 </v-container>
             </v-form>
+=======
+            <div class="dropbox">
+                <select v-model="selectedOption">
+                <option v-for="exch in store.exchanges" :key="exch.id">
+                    {{ exch.cur_nm }}
+                </option>
+                </select>
+            </div>
+            <div class="input1">
+                <label for="send">송금 보낼때 </label>
+                <input type="number" id="send" v-model="inputSend">
+            </div>
+            <div class="input2">
+                <label for="receive">송금 받을때 </label>
+                <input type="number" id="receive" v-model=inputReceive>
+            </div>
+>>>>>>> jonggil
         </form>
         <p>* 엔화, 인도네시아 루피아는 100 단위, 나머지 모두 1단위</p>
         <hr>
@@ -153,7 +175,12 @@ watch([inputSend, inputReceive, selectedOption], () => {
         <hr>
         <strong>오늘의 환율</strong>
         <ExchangeRateListItem
+<<<<<<< HEAD
             :exchange="store.exchanges" 
+=======
+            v-for="exchange in store.exchanges" 
+            :exchange="exchange" 
+>>>>>>> jonggil
             />
     </div>
 

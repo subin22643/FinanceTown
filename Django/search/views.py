@@ -1,22 +1,20 @@
-from django.shortcuts import render
-from django.conf import settings
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
+from django.conf import settings
 from django.http import JsonResponse
 import requests
 from .models import DepositProducts, DepositOptions, SavingProducts, SavingOptions
 from .serializers import DepositProductsSerializer, DepositOptionsSerializer, SavingProductsSerializer, SavingOptiontsSerializer
 
+
 # @@@@@@@@@@@@ params에 pageNO 수정 해야함
-
-
 BASE_URL = 'https://finlife.fss.or.kr/finlifeapi/'
 DEPOSIT_URL = BASE_URL + 'depositProductsSearch.json'
 SAVING_URL = BASE_URL + 'savingProductsSearch.json'
 params = {
-    'auth': 'c80d28bbd5d6dbf81590668a229cdb66',
+    'auth': settings.SEARCH_API_KEY,
     'topFinGrpNo': '020000',
     'pageNo': '1',
     }
@@ -28,8 +26,6 @@ params = {
 #     'endDate': '',
 #     'authKey': '1',
 #     }
-
-
 
 @api_view(['get'])
 def deposit_index(request):
@@ -67,9 +63,6 @@ def saving_products_options(request, fin_prdt_cd):
 
     serializer = SavingProductsSerializer(product)
     return Response(serializer.data)
-
-
-
 
 
 # requests 모듈을 활용하여

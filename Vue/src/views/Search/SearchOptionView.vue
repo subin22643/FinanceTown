@@ -55,7 +55,6 @@ const cartOption = (product, option) => {
     localStorage.setItem('cart', JSON.stringify(cart))
 }
 
-
 </script>
 
 <template>
@@ -94,6 +93,5 @@ const cartOption = (product, option) => {
 </template>
 
 <style scoped>
-
 
 </style>

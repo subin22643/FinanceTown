@@ -10,6 +10,7 @@ onMounted(() => {
 
 const newsList = store.news
 
+<<<<<<< HEAD
 
 </script>
 
@@ -18,12 +19,22 @@ const newsList = store.news
         <h3>오늘의 금융 뉴스</h3>
             <p v-for="news in newsList">
                 <a :href="news.link" v-html="news.title"></a>
+=======
+</script>
+
+<template>
+    <div>
+        <h3>오늘의 금융 뉴스</h3>
+            <p v-for="news in newsList">
+                <a :href="news.link"><p v-html="news.title"></p></a>
+>>>>>>> jonggil
             </p>
     </div>
 </template>
 
 <style scoped>
 
+<<<<<<< HEAD
 .card {
     width: 700px;
     padding: 20px;
@@ -34,4 +45,6 @@ const newsList = store.news
 }
 
 
+=======
+>>>>>>> jonggil
 </style>

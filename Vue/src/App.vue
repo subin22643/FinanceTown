@@ -32,11 +32,13 @@
             </template>
             <template v-else>
               <div class="navbar-nav">
-                <p class="nav-item nav-link">{{ store.pageNickname }}님 환영합니다.</p> 
-                <RouterLink :to="{ name:'Profile' }" class="nav-item nav-link">프로필 보기</RouterLink>
-                <RouterLink :to="{ name:'Cart' }" class="nav-item nav-link">담은 상품</RouterLink>
-
-                <a class="nav-item nav-link" href="#" @click="logOut">로그아웃</a>
+                <div class="user-container"><p class="nav-item nav-link">{{ store.loginUserNickname }}님 환영합니다!</p>
+                    <div class="nav-icons">
+                      <RouterLink :to="{ name:'Profile' }" class="nav-item nav-link"><img :src="profile" alt="profile" class="nav-img"></RouterLink>
+                      <RouterLink :to="{ name:'Cart' }" class="nav-item nav-link"><img :src="cart" alt="cart" class="nav-img"></RouterLink>
+                      <a class="nav-item nav-link" href="#" @click="logOut"><img :src="logout" alt="logout" class="nav-img"></a>
+                    </div>
+                </div>
               </div>
             </template>
         </div>
@@ -56,12 +58,15 @@
 
 <script setup>
   import { RouterLink, RouterView } from 'vue-router'
-  import { useUserStore } from '@/stores/user';
   import { useRouter } from 'vue-router';
+  import { useUserStore } from '@/stores/user';
   import logoImage from '@/assets/로고 그림만.png'
   import logoText from '@/assets/로고 글자집.png'
   import bottom from '@/assets/바닥2.png'
   import sky from '@/assets/하늘5.png'
+  import profile from '@/assets/person.png'
+  import cart from '@/assets/cart4.png'
+  import logout from '@/assets/logout.png'
   
   const store = useUserStore()
   const router = useRouter()
@@ -114,16 +119,6 @@
   margin-right: 10px;
 }
 
-.back {
-    margin-left: 10px; /* 버튼 간격 조정 */
-    color: blueviolet;
-    font-weight: bolder;
-    border: 2px solid gray;
-    padding: 5px;
-    margin-bottom: 20px;
-  }
-  
-
 .router-view-container {
   padding: 20px;
   margin-top: 20px;
@@ -132,6 +127,23 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
 }
 
+.user-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 0px;
+  margin-top: -10px;
+}
+
+.nav-icons {
+  display: flex;
+  justify-content: space-around; /* 아이콘들을 가운데 정렬합니다. */
+  margin-top: -30px;
+}
+
+.nav-icons .nav-item {
+  margin: 0px; /* 좌우 마진을 10px로 조정합니다. */
+}
 
 .text {
   color: #000;
@@ -197,6 +209,11 @@ footer > img {
 .full-width-image {
   width: 100%;
   height: auto; /* 비율을 유지하기 위해 자동으로 설정합니다. */
+}
+
+.nav-img {
+  width: 40px;
+  height: 40px;
 }
 
 </style>

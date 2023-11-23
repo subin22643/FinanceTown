@@ -1,7 +1,7 @@
 <template>
   <hr>
-  <h1>금융퀴즈 공간</h1>
   <div v-if="!quizCompleted" class="quiz-container">
+    <h1>오늘의 금융 Quiz</h1>
     <div v-if="currentSlide < quizData.length" :key="currentSlide">
       <div class="question">{{ quizData[currentSlide].question }}</div>
       <div class="answers">
@@ -14,6 +14,7 @@
   </div>
   <div v-if="resultShown">{{ resultText }}</div>
   <div v-if="quizCompleted" class="completion-message">
+    <h1>오늘의 금융 Quiz</h1>
     <h3>오늘 제공된 퀴즈를 완료하셨습니다.</h3>
     <p><strong>{{ quizData[0].question }}</strong></p>
       <ul>
@@ -71,8 +72,10 @@ const getQuiz = () => {
   .then((res) => {
     if (res.data.alreadyAnswered) {
       quizCompleted.value = true // 이미 퀴즈를 풀었으면 퀴즈 완료 상태로 설정
+      quizData.value = [res.data.quizzes]
     } else {
       quizData.value = [res.data.quizzes] // 퀴즈 데이터를 로드합니다.
+      console.log(quizData.value)
       console.log(quizCompleted.value)
     }
   })
@@ -110,13 +113,23 @@ onMounted(getQuiz); // 컴포넌트가 마운트될 때 fetchQuizData 함수를 
   flex-direction: column;
   align-items: center;
   background-color: #f4f4f4; /* 배경색 */
+  margin-top: 0;
   padding: 2rem;
   border-radius: 10px; /* 모서리 둥글게 */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  height: 100%;
   max-width: 500px; /* 최대 너비 */
   margin: auto; /* 가운데 정렬 */
 }
 
+h1 {
+  margin-top: 0; /* 제목 상단 여백 제거 */
+  padding-top: 1rem; /* 상단 패딩 추가로 조정이 필요할 수 있음 */
+}
+
+.main .carousel-container + .quiz-container {
+  align-self: flex-start; /* 컨테이너를 상단 정렬로 조정 */
+}
 .question {
   margin-bottom: 1rem;
   font-size: 1.25rem; /* 글자 크기 */
@@ -125,6 +138,12 @@ onMounted(getQuiz); // 컴포넌트가 마운트될 때 fetchQuizData 함수를 
 
 .answers {
   margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .quiz-container {
+    margin-top: 1rem;
+  }
 }
 
 .answers label {

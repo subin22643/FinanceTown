@@ -15,15 +15,17 @@ def news(request):
     client_id = settings.NEWS_ID
     client_secret = settings.NEWS_SECRET
     encText = urllib.parse.quote('금융')
-    URL = 'https://openapi.naver.com/v1/search/news.json?query=' + encText
+    URL = 'https://openapi.naver.com/v1/search/news.json?query=' + encText + '&display=100'
     request = urllib.request.Request(URL)
     request.add_header("X-Naver-Client-Id",client_id)
     request.add_header("X-Naver-Client-Secret",client_secret)
     response = urllib.request.urlopen(request)
+    
     rescode = response.getcode()
     if(rescode==200):
         response_body = response.read()
         data = json.loads(response_body.decode('utf-8'))
+
         # '금융'이 제목에 있는 뉴스만 필터링
         filtered_news = [item for item in data['items'] if '금융' in item['title']]
         top_10_news = filtered_news[:10]
@@ -38,7 +40,7 @@ def news(request):
 @api_view(['GET'])
 def tips(request):
     if Tips.objects.exists():  # DB에 데이터가 이미 있는 경우
-      datas = Tips.objects.all() 
+      datas = Tips.objects.all().order_by('?')[:10]
       serializer = TipsSerializer(datas, many=True)
       return Response({ 'data': serializer.data })
     

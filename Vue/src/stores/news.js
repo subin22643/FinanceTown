@@ -12,8 +12,8 @@ export const useNewsStore = defineStore('news', () => {
       url: `${URL}/news/`
     })
       .then(res => {
-        console.log(res.data.items)
-        news.value = res.data.items
+        console.log(res.data)
+        news.value = res.data
       })
       .catch(err => console.log(err))
   }
@@ -30,7 +30,6 @@ export const useNewsStore = defineStore('news', () => {
       })
       .catch(err => console.log(err))
   }
-  
   
   return { news, URL, tips, getNews, getTips }
 }, { persist: true })

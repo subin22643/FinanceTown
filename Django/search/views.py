@@ -76,28 +76,63 @@ def save_deposit_products(request):
 
     for product in products:
         serializer = DepositProductsSerializer(data=product)
-        if serializer.is_valid():
-            if DepositProducts.objects.filter(fin_prdt_cd=product['fin_prdt_cd']).exists():
-                continue
-            product.save()
+        #'save-deposit-products/'을 들어갈 떄마다 DB에 저장을 해야되는데 fin_prdt_cd가 unique로 되어 있어서 에러가 뜸
+        # unique 안되어 있으면 새로고침이나 url로 들어갈때마다 중복자료 계속 저장됨
+        # 해당 데이터를 처리하기 위해 try, except 사용 → 그냥 raise_exception =True를 안하면 try,except 없이 해도 되긴함
+        try:
+            if serializer.is_valid(raise_exception=True):
+                serializer.save()
+        except ValidationError:
+            continue
+
 
     for option in options:
-        if option['intr_rate'] is None:
-            option['intr_rate'] = -1
-        serializer = DepositOptionsSerializer(data=option)
-        if option.is_valid(raise_exception=True):
-            # cd 가져오기 -> ORM을 python으로 바꾸기
-            x = DepositProducts.objects.filter(fin_prdt_cd=option['fin_prdt_cd']).first()
-            # 이미 있는 데이터면 걸러주는 코드 추가
-            if DepositOptions.objects.filter(
-                    intr_rate = option['intr_rate'],
-                    intr_rate2 = option['intr_rate2'],
-                    save_trm = option['save_trm'],
-                    fin_prdt_cd_id = x.pk,
-                ).exists():
-                continue
-            option.save(fin_prdt_cd=x)
+        try:
+            product = DepositProducts.objects.get(fin_prdt_cd=option['fin_prdt_cd'])
+            serializer =DepositOptionsSerializer(data=option)
+            if serializer.is_valid(raise_exception=True):
+                serializer.save(product=product)
+        except DepositProducts.DoesNotExist: #get에서 일치하는 정보가 없을 경우
+            continue        
+        except ValidationError:
+            continue
+
+    return Response({"message": "성공적으로 처리되었습니다."},status=status.HTTP_201_CREATED)
+
+
+# requests 모듈을 활용하여
+# 정기예금 상품 목록 데이터를 가져와
+# 정기예금 상품 목록, 옵션 목록을 DB에 저장
+@api_view(['GET'])
+def save_saving_products(request):
+    response = requests.get(SAVING_URL, params=params).json()
+    products = response['result']['baseList']
+    options = response['result']['optionList']
+
+    for product in products:
+        serializer = SavingProductsSerializer(data=product)
+        #'save-deposit-products/'을 들어갈 떄마다 DB에 저장을 해야되는데 fin_prdt_cd가 unique로 되어 있어서 에러가 뜸
+        # unique 안되어 있으면 새로고침이나 url로 들어갈때마다 중복자료 계속 저장됨
+        # 해당 데이터를 처리하기 위해 try, except 사용 → 그냥 raise_exception =True를 안하면 try,except 없이 해도 되긴함
+        try:
+            if serializer.is_valid(raise_exception=True):
+                serializer.save()
+        except ValidationError:
+            continue
+
+    for option in options:
+        try:
+            product = SavingProducts.objects.get(fin_prdt_cd=option['fin_prdt_cd'])
+            serializer =SavingOptiontsSerializer(data=option)
+            if serializer.is_valid(raise_exception=True):
+                serializer.save(product=product)
+        except SavingProducts.DoesNotExist: #get에서 일치하는 정보가 없을 경우
+            continue        
+        except ValidationError:
+            continue
+    
     return JsonResponse({ "message": "okay"})
+
 
 
 
@@ -145,38 +180,7 @@ def top_rate_deposit(request):
     return Response(data)
 
 
-# requests 모듈을 활용하여
-# 정기예금 상품 목록 데이터를 가져와
-# 정기예금 상품 목록, 옵션 목록을 DB에 저장
-@api_view(['GET'])
-def save_saving_products(request):
-    response = requests.get(SAVING_URL, params=params).json()
-    products = response['result']['baseList']
-    options = response['result']['optionList']
 
-    for product in products:
-        serializer = SavingProductsSerializer(data=product)
-        #'save-deposit-products/'을 들어갈 떄마다 DB에 저장을 해야되는데 fin_prdt_cd가 unique로 되어 있어서 에러가 뜸
-        # unique 안되어 있으면 새로고침이나 url로 들어갈때마다 중복자료 계속 저장됨
-        # 해당 데이터를 처리하기 위해 try, except 사용 → 그냥 raise_exception =True를 안하면 try,except 없이 해도 되긴함
-        try:
-            if serializer.is_valid(raise_exception=True):
-                serializer.save()
-        except ValidationError:
-            continue
-
-    for option in options:
-        try:
-            product = SavingProducts.objects.get(fin_prdt_cd=option['fin_prdt_cd'])
-            serializer =SavingOptiontsSerializer(data=option)
-            if serializer.is_valid(raise_exception=True):
-                serializer.save(product=product)
-        except SavingProducts.DoesNotExist: #get에서 일치하는 정보가 없을 경우
-            continue        
-        except ValidationError:
-            continue
-    
-    return JsonResponse({ "message": "okay"})
 
 
 # 가입 기간에 상관없이

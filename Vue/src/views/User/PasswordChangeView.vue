@@ -34,9 +34,60 @@ const changePassword = ()=> {
 </script>
 
 <style scoped>
+.password-change-container {
+  text-align: center;
+  margin-top: 50px;
+  padding: 20px;
+  background-color: #FAFAFA;
+  border: 1px solid #B3B3B3;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.password-change-container h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #375a7f;
+}
+
+.password-change-container form div {
+  margin-bottom: 15px;
+}
+
+.password-change-container label {
+  font-weight: 700;
+  display: block;
+  text-align: left;
+  margin-bottom: 5px;
+  color: #495057;
+}
+
+.password-change-container input[type="password"] {
+  border: 1px solid #B3B3B3;
+  padding: 10px;
+  font-size: 16px;
+  width: 100%; /* 가로로 늘리기 위해 유지 */
+}
+
+.password-change-container button {
+  background-color: #375a7f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.password-change-container button:hover {
+  background-color: #2c446b;
+}
+
 .error-message {
-    color: red;
-    font-size: 0.8em;
-    margin-top: 5px;
+  color: #E74C3C;
+  font-size: 14px;
+  margin-top: 5px;
 }
 </style>

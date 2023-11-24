@@ -8,33 +8,31 @@
         <form class="signup-form" @submit.prevent="update">
           <!-- Username Field -->
           <div class="form-group">
-            <input type="text" v-model.trim="profileData.username" class="form-control" placeholder="아이디" readonly>
+            <label for="username">아이디</label>
+            <input type="text" v-model.trim="profileData.username" class="form-control" id="username" placeholder="아이디" readonly>
           </div>
-           <!-- Nickname Field -->
-           <div class="form-group">
-            <input type="text" v-model.trim="profileData.nickname" class="form-control" placeholder="닉네임" >
+          <!-- Nickname Field -->
+          <div class="form-group">
+            <label for="nickname">닉네임</label>
+            <input type="text" v-model.trim="profileData.nickname" class="form-control" id="nickname" placeholder="닉네임" >
             <div v-if="store.errorMessages.nickname" class="error-message">{{ store.errorMessages.nickname }}</div>
           </div>
-          <!-- Password Fields -->
-          <!-- <div class="form-group">
-            <input type="password" v-model.trim="password1" class="form-control" placeholder="비밀번호">
-          </div>
-          <div class="form-group">
-            <input type="password" v-model.trim="password2" class="form-control" placeholder="비밀번호 재확인">
-          </div> -->
           <!-- Age Field -->
           <div class="form-group">
-              <input type="number" v-model.trim="profileData.age" class="form-control" placeholder="나이" >
-              <div v-if="store.errorMessages.age" class="error-message">{{ store.errorMessages.age }}</div>
+            <label for="age">나이</label>
+            <input type="number" v-model.trim="profileData.age" class="form-control" id="age" placeholder="나이" >
+            <div v-if="store.errorMessages.age" class="error-message">{{ store.errorMessages.age }}</div>
           </div>
           <!-- Email Field -->
           <div class="form-group">
-            <input type="email" v-model.trim="profileData.email" class="form-control" placeholder="이메일" >
+            <label for="email">이메일</label>
+            <input type="email" v-model.trim="profileData.email" class="form-control" id="email" placeholder="이메일" >
             <div v-if="store.errorMessages.email" class="error-message">{{ store.errorMessages.email }}</div>
           </div>
           <!-- Gender Field -->
           <div class="form-group">
-            <select v-model="profileData.gender" class="form-control">
+            <label for="gender">성별</label>
+            <select v-model="profileData.gender" class="form-control" id="gender">
               <option value="성별없음">성별 선택</option>
               <option value="남성">남성</option>
               <option value="여성">여성</option>
@@ -42,22 +40,26 @@
           </div>
           <!-- Phone Number Field -->
           <div class="form-group">
-            <input type="text" v-model.trim="profileData.phone_number" class="form-control" placeholder="전화번호" >
+            <label for="phone_number">전화번호</label>
+            <input type="text" v-model.trim="profileData.phone_number" class="form-control" id="phone_number" placeholder="전화번호" >
             <div v-if="store.errorMessages.phone_number" class="error-message">{{ store.errorMessages.phone_number }}</div>
           </div>
           <!-- Money Field -->
           <div class="form-group">
-            <input type="number" v-model.trim="profileData.money" class="form-control" placeholder="자산" >
+            <label for="money">자산</label>
+            <input type="number" v-model.trim="profileData.money" class="form-control" id="money" placeholder="자산" >
             <div v-if="store.errorMessages.money" class="error-message">{{ store.errorMessages.money }}</div>
           </div>
           <!-- Salary Field -->
           <div class="form-group">
-            <input type="number" v-model.trim="profileData.salary" class="form-control" placeholder="연봉" >
+            <label for="salary">연봉</label>
+            <input type="number" v-model.trim="profileData.salary" class="form-control" id="salary" placeholder="연봉" >
             <div v-if="store.errorMessages.salary" class="error-message">{{ store.errorMessages.salary }}</div>
           </div>
           <!-- Financial Products Field -->
           <div class="form-group">
-            <input type="text" v-model.trim="profileData.financial_products" class="form-control" placeholder="금융 상품 (쉼표로 구분)" >
+            <label for="financial_products">금융 상품</label>
+            <input type="text" v-model.trim="profileData.financial_products" class="form-control" id="financial_products" placeholder="금융 상품 (쉼표로 구분)" >
             <div v-if="store.errorMessages.financial_products" class="error-message">{{ store.errorMessages.financial_products }}</div>
           </div>
           <!-- Submit Button -->
@@ -71,7 +73,6 @@
 </template>
 
 <script setup>
-
 import { onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
 
@@ -85,7 +86,6 @@ const update = () => {
 onMounted(() => {
   store.clearErrorMessages()
 })
-
 </script>
 
 <style scoped>
@@ -94,57 +94,69 @@ onMounted(() => {
 }
 
 .brand-title {
-  color: #00a2ff; /* Sky-blue color for the brand title */
+  color: #375a7f;
+  font-family: 'Nanum Gothic', sans-serif;
+  font-weight: 800;
+  margin-bottom: 1rem;
   font-size: 2em;
-  margin-bottom: 30px;
 }
 
 .signup-form {
-  background-color: #f8f9fa;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: #FAFAFA;
+  border: 1px solid #B3B3B3;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  margin: 0 auto;
 }
 
 .form-group {
-  margin-bottom: 15px;
-}
-
-.form-label {
-  display: block;
-  margin-bottom: 5px;
-  color: #6c757d; /* Gray text for the labels */
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .form-control {
-  border-radius: 5px;
-  border: 1px solid #ced4da;
-  height: 40px; /* Reduced height for a more compact look */
+  border: 1px solid #B3B3B3;
+  padding: 0.5rem;
+  font-size: 20px;
+}
+
+.form-group label {
+  font-weight: 700;
+  text-align: left;
+}
+
+/* 아이디 입력 필드 비활성화 스타일 */
+#username[readonly] {
+  background-color: #dcdcdc; /* 배경색 변경 (예: 밝은 회색) */
+  color: #6c757d; /* 텍스트 색상 변경 */
+  cursor: not-allowed; /* 커서를 비활성화 모양으로 변경 */
 }
 
 .btn-submit {
   width: 100%;
   padding: 10px;
-  background-color: #00a2ff; /* Sky-blue background for the button */
+  background-color: #375a7f;
   border: none;
   border-radius: 5px;
   color: white;
-  margin-top: 20px; /* Space above the button */
+  margin-top: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .error-message {
-    color: red;
-    font-size: 0.8em;
-    margin-top: 5px;
+  color: red;
+  font-size: 0.8em;
+  margin-top: 5px;
 }
-
 
 .btn-submit:hover {
-  background-color: #008bdc; /* Slightly darker on hover */
+  background-color: #375a7f;
 }
 
-/* Responsive adjustments */
+/* 반응형 조정 */
 @media (max-width: 576px) {
   .container {
     padding-top: 30px;
@@ -155,7 +167,7 @@ onMounted(() => {
   }
 
   .signup-form {
-    padding: 15px;
+    padding: 1rem;
   }
 }
 </style>

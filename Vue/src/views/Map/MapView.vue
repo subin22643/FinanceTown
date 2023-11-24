@@ -1,39 +1,40 @@
 <template>
-    <div class="map_wrap">
-      <!-- 검색 폼의 위치를 조정하기 위해 추가된 wrapper -->
-      <div class="search_form_wrapper">
-        <form @submit.prevent="searchPlaces" class="search_form">
-          <!-- 드롭다운 메뉴를 추가합니다 -->
-          <select v-model="selectedCity" class="me-1">
-            <option disabled value="">도시 선택</option>
-            <option v-for="city in cities" :value="city">{{ city }}</option>
-          </select>
-          <select v-model="selectedDistrict" class="me-1">
-            <option disabled value="">구 선택</option>
-            <option v-for="district in filteredDistricts" :value="district">{{ district }}</option>
-          </select>
-          <select v-model="selectedBank" class="me-1">
-            <option disabled value="">은행 선택</option>
-            <option v-for="bank in banks" :value="bank">{{ bank }}</option>
-          </select>
-          <button type="submit">검색</button>
-        </form>
-      </div>
-      <div id="map" class="map" ref="map"></div>
-      <div id="menu_wrap" class="bg_white" v-if="placesList.length">
-        <hr>
-        <ul id="placesList">
-          <li v-for="(place, index) in placesList" :key="index" class="item" @click="focusOnMarker(place)">
-            <div :class="['markerbg', `marker_${index + 1}`]"></div>
-            <div class="info">
-              <h5>{{ place.place_name }}</h5>
-              <span>{{ place.address_name }}</span>
-              <span class="tel">{{ place.phone }}</span>
-            </div>
-          </li>
-        </ul>
-      </div>
+  <div class="map_wrap">
+    <!-- 검색 폼의 위치를 조정하기 위해 추가된 wrapper -->
+    <div class="search_form_wrapper">
+      <form @submit.prevent="searchPlaces" class="search_form">
+        <!-- 드롭다운 메뉴를 추가합니다 -->
+        <select v-model="selectedCity" class="me-1 custom-select">
+          <option disabled value="" style="font-size: 20px;">도시 선택</option>
+          <option v-for="city in cities" :value="city" style="font-size: 20px;">{{ city }}</option>
+        </select>
+        <select v-model="selectedDistrict" class="me-1 custom-select">
+          <option disabled value="" style="font-size: 20px;">구/군 선택</option>
+          <option v-for="district in filteredDistricts" :value="district" style="font-size: 20px;">{{ district }}</option>
+        </select>
+        <select v-model="selectedBank" class="me-1 custom-select">
+          <option disabled value="" style="font-size: 20px;">은행 선택</option>
+          <option v-for="bank in banks" :value="bank" style="font-size: 20px;">{{ bank }}</option>
+        </select>
+        <button type="submit" class="btn btn-primary">검색</button>
+      </form>
     </div>
+    <div id="map" class="map" ref="map"></div>
+    <div id="menu_wrap" class="bg_white">
+      <hr>
+      <ul id="placesList">
+        <li v-if="placesList.length === 0" class="no-results" style="font-size: 20px;">검색 결과가 여기에 표시됩니다</li>
+        <li v-for="(place, index) in placesList" :key="index" class="item" @click="focusOnMarker(place)">
+          <div :class="['markerbg', `marker_${index + 1}`]"></div>
+          <div class="info">
+            <h5>{{ place.place_name }}</h5>
+            <span>{{ place.address_name }}</span>
+            <span class="tel">{{ place.phone }}</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
 </template>
   
   <script setup>
@@ -62,8 +63,7 @@
     cityDistricts[city] = Object.keys(city_data[city])
   })
 
-  console.log(cityDistricts)
-  
+
   
   // 선택된 값들
   const selectedCity = ref('');
@@ -175,13 +175,13 @@
 <style scoped>
 .map {
   position: absolute;
-  left: calc(250px + 20px); /* #menu_wrap 너비 + 좌측 마진 */
-  width: calc(100% - 250px - 30px); /* 전체 너비에서 #menu_wrap 너비와 좌측 마진을 뺀 너비 */
-  height: calc(100% - 30px); /* 전체 높이에서 상단과 하단의 margin을 뺀 높이 */
-  top: 35px; /* 상단으로부터의 거리 조정 */
+  left: 650px; /* #menu_wrap 너비 + 좌측 마진 */
+  width: 1400px; /* 전체 너비에서 #menu_wrap 너비와 좌측 마진을 뺀 너비 */
+  height: 800px; /* 전체 높이에서 상단과 하단의 margin을 뺀 높이 */
+  top: 45px; /* 상단으로부터의 거리 조정 */
 }
 
-.map_wrap, .map_wrap * {margin:0;padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
+.map_wrap, .map_wrap * {margin:0;padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:20px;}
 .map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
 .map_wrap {
   position: relative;
@@ -191,14 +191,14 @@
 }
 
 #menu_wrap {
-  width: 250px;
-  height: 100; /* map_wrap의 높이에 맞춤 */
+  width: 615px;
+  height: 810px; /* map_wrap의 높이에 맞춤 */
   margin-top: 35px; /* 상단 위치 조정 */
   padding: 5px;
   overflow-y: auto;
-  background: rgba(255, 255, 255, 0.7);
+  background: #f8f9fa;;
   z-index: 1;
-  font-size: 12px;
+  font-size: 20px;
   border-radius: 10px;
 }
 .bg_white {background:#fff;}
@@ -206,6 +206,14 @@
   position: absolute;
   left: 5px;
   z-index: 2;
+}
+
+#placesList .no-results {
+  padding: 20px;
+  text-align: center;
+  color: #777;
+  font-size: 20px;
+  white-space: nowrap;
 }
 
 #menu_wrap hr {display: block; height: 1px;border: 0; border-top: 2px solid #5F5F5F;margin:3px 0;}
@@ -239,6 +247,29 @@
 #pagination {margin:10px auto;text-align: center;}
 #pagination a {display:inline-block;margin-right:10px;}
 #pagination .on {font-weight: bold; cursor: default;color:#777;}
+
+.custom-select {
+  font-size: 20px;
+  padding: 6px 12px;
+  border: 1px solid #B3B3B3;
+  border-radius: 4px;
+  width: auto;
+  margin-right: 5px;
+}
+
+.search_form button {
+  background-color: #375a7f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  margin-top: -9px;
+  padding: 6px 12px;
+  font-size: 20px;
+  height: 46px;
+  cursor: pointer;
+}
+
+.search_form button:hover {
+  background-color: #2c446b;
+}
 </style>
-  
-  

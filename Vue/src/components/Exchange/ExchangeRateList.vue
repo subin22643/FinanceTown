@@ -90,12 +90,13 @@ watch([inputSend, inputReceive, selectedOption], () => {
 
 <template>
     <div>
-        <strong>이건 내가 검색할거</strong>
+        <strong>통화 선택</strong>
         <form>
             <v-select v-model="selectedOption"
                 label="통화"
                 :items="cur_nm"
                 variant="outlined"
+                class="input-field"
                 ></v-select>
             <v-form v-model="valid">
                 <v-container>
@@ -112,6 +113,7 @@ watch([inputSend, inputReceive, selectedOption], () => {
                         label="송금 보낼 때"
                         required
                         hide-details
+                        class="input-field"
                     ></v-text-field>
                     </v-col>
 
@@ -127,6 +129,7 @@ watch([inputSend, inputReceive, selectedOption], () => {
                         label="송금 받을 때"
                         hide-details
                         required
+                        class="input-field"
                     ></v-text-field>
                     </v-col>
                 </v-row>
@@ -161,5 +164,7 @@ watch([inputSend, inputReceive, selectedOption], () => {
 </template>
 
 <style scoped>
-
+.input-field {
+  width: 80%;
+}
 </style>

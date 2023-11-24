@@ -1,9 +1,9 @@
 <template>
   <div class="container mt-5">
     <div class="row justify-content-center">
-      <div class="col-md-6">
+      <div class="col-md-8">
         <div class="text-center mb-4">
-          <h2 class="brand-title">수길이네 금융마을</h2>
+          <h1 class="brand-title">수길이네 금융마을</h1>
         </div>
         <form @submit.prevent="logIn" class="signup-form">
           <div class="form-group">
@@ -49,72 +49,107 @@ onMounted(() => {
 
 </script>
 
-<style scoped>
+<style setup>
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
+
+/* 전체 페이지 컨테이너 스타일 */
+.row {
+  width: 1000px;
+  height: auto;
+}
+
 .container {
-  padding-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* min-height: 87vh; */
+  font-family: 'Nanum Gothic', sans-serif; /* Nanum Gothic 폰트 적용 */
+  height: auto;
 }
 
-.brand-title {
-  color: #00a2ff; /* Sky-blue color for the brand title */
-  font-size: 2em;
-  margin-bottom: 30px;
-}
-
+/* 로그인 폼 컨테이너 스타일 */
 .signup-form {
-  background-color: #f8f9fa;
-  padding: 20px;
+  width: 100%;
+  max-width: 1000px;
+  padding: 2rem;
+  background: #fafafae3;
+  border: 3px solid #5d92aa;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Nanum Gothic', sans-serif; /* Nanum Gothic 폰트 적용 */
 }
 
+/* 브랜드 타이틀 스타일 */
+.brand-title {
+  color: #437fa1;
+  font-family: 'Black Han Sans', sans-serif; /* Black Han Sans 폰트 적용 */
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* 폼 그룹 스타일 */
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 1rem;
+  font-family: 'Nanum Gothic', sans-serif; /* Nanum Gothic 폰트 적용 */
 }
 
+/* 폼 레이블 스타일 */
 .form-label {
   display: block;
-  margin-bottom: 5px;
-  color: #6c757d; /* Gray text for the labels */
+  color: #0277bd;
+  font-family: 'Nanum Gothic', sans-serif; /* Nanum Gothic 폰트 적용 */
+  margin-bottom: 0.5rem;
 }
 
+/* 입력 필드 스타일 */
 .form-control {
-  border-radius: 5px;
-  border: 1px solid #ced4da;
-  height: 40px; /* Reduced height for a more compact look */
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 2px solid #81d4fa;
+  font-family: 'Nanum Gothic', sans-serif; /* Nanum Gothic 폰트 적용 */
 }
 
+/* 로그인 버튼 스타일 */
 .btn-submit {
   width: 100%;
-  padding: 10px;
-  background-color: #00a2ff; /* Sky-blue background for the button */
-  border: none;
-  border-radius: 5px;
+  padding: 0.7rem 1rem;
+  background-color: #5d92aa;
   color: white;
-  margin-top: 20px; /* Space above the button */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border: none;
+  border-radius: 0;
+  font-family: 'Black Han Sans', sans-serif; /* Black Han Sans 폰트 적용 */
+  cursor: pointer;
 }
 
 .btn-submit:hover {
-  background-color: #008bdc; /* Slightly darker on hover */
-}
-.error-message {
-    color: red;
-    font-size: 0.8em;
-    margin-top: 5px;
+  background-color: #01579b;
 }
 
-/* Responsive adjustments */
+/* 에러 메시지 스타일 */
+.error-message {
+  color: #E74C3C;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  font-family: 'Nanum Gothic', sans-serif; /* Nanum Gothic 폰트 적용 */
+}
+
+/* 반응형 조정 */
+@media (max-width: 768px) {
+  .signup-form {
+    max-width: 600px;
+    padding: 1.5rem;
+  }
+}
+
 @media (max-width: 576px) {
   .container {
-    padding-top: 30px;
+    margin-top: 0;
   }
-
-  .brand-title {
-    font-size: 1.5em;
-  }
-
   .signup-form {
-    padding: 15px;
+    max-width: 100%;
+    padding: 1rem;
   }
 }
 </style>

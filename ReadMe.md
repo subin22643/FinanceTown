@@ -26,7 +26,7 @@
 
 - 2023년 11월 16일 ~ 2023년 11월 23일 (8일)👋
 
-![개발 일정 간트차트](C:\Users\SSAFY\Desktop\개발 일정 간트차트.png)
+![간트차트](https://github.com/subin22643/finalpjt/assets/139416006/3a26961b-151e-4535-a894-39e539daf887)
 
 # **🤝 팀 구성 및 업무 분담 내역**
 
@@ -65,16 +65,16 @@
 
 # 컴포넌트 구조
 
-![수길이네 컴포넌트 구조](C:\Users\정종길\Desktop\진짜 pjt\pjt 관련 파일\수길이네 컴포넌트 구조.PNG)
+![컴포넌트 구조](https://github.com/subin22643/finalpjt/assets/139416006/a05e6e54-d214-48c3-99c6-919cecef4d70)
+
 
 # ERD
 
 - 유저 - 게시판 - 댓글
 - 유저 - Quiz model (하루에 퀴즈를 한 번만 풀 수 있도록 퀴즈를 푼 기록 저장)
 
-![수길이네 ERD-1](C:\Users\SSAFY\Desktop\GitHUb\finalpjt\pjt 관련 파일\수길이네 ERD-1.PNG)
-
-![수길이네 ERD-2](C:\Users\SSAFY\Desktop\GitHUb\finalpjt\pjt 관련 파일\수길이네 ERD-2.PNG)
+![ERD-1](https://github.com/subin22643/finalpjt/assets/139416006/5e217f50-f400-4544-bd52-d991ef3b1f5c)
+![ERD-2](https://github.com/subin22643/finalpjt/assets/139416006/b6a809dc-080f-4324-9439-29c380b3ca60)
 
 ### 🧾개발일지
 
